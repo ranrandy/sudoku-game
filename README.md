@@ -1,3 +1,13 @@
-Fill this in before the final project deadline. Someone who has _no familiarity_ with your project should be able to read this and understand:
-* what your project does
-* how to set it up and run it
+#CS 126 Final Project: Sudoku <h3>
+
+This project is a Sudoku game GUI based on C++ and its Cinder library.
+
+##Build Requirements
+
+**On MacOS:**
+- CLion
+- Cinder
+
+##Installation:
+- If you don't have CLion, please visit [JetBrain CLion](https://www.jetbrains.com/clion/download/).
+- If you don't have Cinder, please visit [Cinder](https://www.libcinder.org/download).
