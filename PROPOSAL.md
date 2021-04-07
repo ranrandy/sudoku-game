@@ -1,4 +1,4 @@
-##CS 126 Final Project: Sudoku
+## CS 126 Final Project: Sudoku
 
 `Introduction`
 
