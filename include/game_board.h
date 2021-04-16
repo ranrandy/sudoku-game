@@ -21,7 +21,15 @@ public:
    */
   void GenerateNumbers(size_t number_total);
   
+  size_t GetBoardSize() const;
+  
 private:
+  const size_t kMaxBoardSize = 25;
+  const size_t kMinBoardSize = 4;
+  
+  bool IsValidBoard(size_t row, size_t col, size_t number);
+  bool IsValidSubBoard(size_t row, size_t col, size_t number);
+
   size_t board_size_;
   size_t number_total_;
 
