@@ -91,11 +91,11 @@ void GameBoard::DrawNumbers() {
     for (size_t col = 0; col < sudoku_board_.GetBoardSize(); ++col) {
       if (sudoku_board_.GetBoardNumbers()[row][col] != 0) {
         vec2 square_center = board_top_left_ +
-                             vec2((row + 0.5) * square_length,
-                                  (col + 0.5) * square_length);
+                             vec2((row + kNumberPosXParameter) * square_length,
+                                  (col + kNumberPosYParameter) * square_length);
         ci::gl::drawStringCentered(
             std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
-            square_center, kSquareEdgeColor);
+            square_center, kSquareEdgeColor, kNumberFont);
       }
     }
   }

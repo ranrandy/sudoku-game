@@ -29,7 +29,7 @@ void SudokuGameApp::draw() {
   
   DrawLevelBox();
   
-  DrawSolutionBox(solution_status);
+  DrawSolutionBox(solution_status_);
 }
 
 void SudokuGameApp::update() {
@@ -54,7 +54,8 @@ void SudokuGameApp::DrawLevelBox() {
                                            level_box_height * (row + 1.0));
     vec2 level_box_center = 
         vec2((level_box_top_left.x + level_box_bottom_right.x) / 2,
-             (level_box_top_left.y + level_box_bottom_right.y) / 2);
+             (level_box_top_left.y + level_box_bottom_right.y) / 
+                 kLevelBoxPosYParameter);
     level_centers_.push_back(level_box_center);
     ci::Rectf level_box_edge(level_box_top_left, level_box_bottom_right);
     ci::gl::color(kLevelBoxEdgeColor);
@@ -62,14 +63,14 @@ void SudokuGameApp::DrawLevelBox() {
   }
 
   ci::gl::drawStringCentered(kEasyLevel, level_centers_.at(0), 
-                             kLevelBoxEdgeColor);
+                             kLevelBoxEdgeColor, kLevelFont);
   ci::gl::drawStringCentered(kMediumLevel, level_centers_.at(1), 
-                             kLevelBoxEdgeColor);
+                             kLevelBoxEdgeColor, kLevelFont);
   ci::gl::drawStringCentered(kHardLevel, level_centers_.at(2), 
-                             kLevelBoxEdgeColor);
+                             kLevelBoxEdgeColor, kLevelFont);
 }
 
-void SudokuGameApp::ChangeLevels(ci::app::MouseEvent event) {
+void SudokuGameApp::ChangeLevels(const ci::app::MouseEvent& event) {
   for (size_t level = 0; level < kTotalLevels; level++) {
     if (abs(level_centers_[level].x - float(event.getX())) <
         (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 &&
@@ -101,12 +102,13 @@ void SudokuGameApp::DrawSolutionBox(const std::string& solution_status) {
   
   vec2 solution_string_center = 
       vec2((kSolutionBoxTopLeft.x + kSolutionBoxBottomRight.x) / 2,
-           (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 2);
+           (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 
+               kSolutionBoxPosYParameter);
   ci::gl::drawStringCentered(solution_status, solution_string_center, 
-                             kSolutionBoxEdgeColor);
+                             kSolutionBoxEdgeColor, kSolutionFont);
 }
 
-void SudokuGameApp::ShowSolution(ci::app::MouseEvent event) {
+void SudokuGameApp::ShowSolution(const ci::app::MouseEvent& event) {
   vec2 solution_string_center =
       vec2((kSolutionBoxTopLeft.x + kSolutionBoxBottomRight.x) / 2,
            (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 2);
@@ -115,7 +117,7 @@ void SudokuGameApp::ShowSolution(ci::app::MouseEvent event) {
       abs(solution_string_center.y - float(event.getY())) < 
           (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
     if (!game_board_.ShowSolution()) {
-      solution_status = kNoSolutionString;
+      solution_status_ = kNoSolutionString;
     }
   }
 }

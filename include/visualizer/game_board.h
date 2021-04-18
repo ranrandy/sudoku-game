@@ -4,6 +4,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
+#include "cinder/Text.h"
 #include "core/sudoku_board.h"
 #include "core/sudoku_solver.h"
 
@@ -12,6 +13,7 @@ namespace sudokugame {
 namespace visualizer {
 
 using sudokugame::SudokuBoard;
+using ci::Font;
 using glm::vec2;
 
 class GameBoard {
@@ -44,6 +46,10 @@ private:
   
   const float kSubBoardLineWidth = 3.0;
   const float kTileLineWidth = 1.0;
+  const float kNumberPosXParameter = 0.5;
+  const float kNumberPosYParameter = 0.25;
+
+  const Font kNumberFont = Font("Times New Roman", 48);
   
   void DrawSquares(size_t square_length, size_t edge_line_width, size_t number);
   void DrawNumbers();

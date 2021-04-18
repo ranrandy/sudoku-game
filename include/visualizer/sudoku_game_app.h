@@ -36,6 +36,8 @@ private:
   
   const float kLevelBoxEdgeWidth = 2.0;
   const float kSolutionBoxEdgeWidth = 2.0;
+  const float kLevelBoxPosYParameter = 2.08;
+  const float kSolutionBoxPosYParameter = 2.05;
 
   const std::string kEasyLevel = "Easy";
   const std::string kMediumLevel = "Medium";
@@ -57,16 +59,19 @@ private:
   const ci::Color kSolutionBoxColor = "white";
   const ci::Color kSolutionBoxEdgeColor = "black";
 
+  const Font kLevelFont = Font("Times New Roman", 24);
+  const Font kSolutionFont = Font("Times New Roman", 30);
+
   void DrawLevelBox();
-  void ChangeLevels(ci::app::MouseEvent event);
+  void ChangeLevels(const ci::app::MouseEvent& event);
   
   void DrawSolutionBox(const std::string& solution_status);
-  void ShowSolution(ci::app::MouseEvent event);
+  void ShowSolution(const ci::app::MouseEvent& event);
 
   GameBoard game_board_ = GameBoard(kBoardTopLeft, kBoardRightBottom,
                                     kBoardSize);
   std::vector<vec2> level_centers_;
-  std::string solution_status = kSolutionString;
+  std::string solution_status_ = kSolutionString;
 };
 
 } // namespace visualizer
