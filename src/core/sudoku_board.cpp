@@ -16,26 +16,30 @@ SudokuBoard::SudokuBoard(size_t board_size) {
 }
 
 void SudokuBoard::GenerateValidBoard(size_t number_total) {
-  if (number_total > kSizeNineMaxTotalNumber && board_size_ == kMaxBoardSize) {
-    throw std::invalid_argument("The total number is too large.");
+  if (number_total > board_size_ * board_size_) {
+    throw std::invalid_argument("There are too many numbers");
   }
   
-  GenerateNumbers(number_total);
+  number_total_ = number_total;
   
+  GenerateNumbers(board_size_ * board_size_ / kGeneratingParameter);
   while (!SudokuSolver(board_).Solve()) {
     board_ = vector<vector<size_t>>(board_size_, 
                                     vector<size_t>(board_size_, 0));
-    number_total_ = 0;
-    GenerateNumbers(number_total);
+    GenerateNumbers(board_size_ * board_size_ / kGeneratingParameter);
   }
+  
+  SudokuSolver sudoku_solver(board_);
+  sudoku_solver.Solve();
+  board_ = sudoku_solver.GetSolution();
+  RemoveNumbers(board_size_ * board_size_ - number_total_);
 }
 
-bool SudokuBoard::InsertNumber(size_t row, size_t col, size_t number) {
+bool SudokuBoard::AddNumber(size_t row, size_t col, size_t number) {
   if (!IsValidTile(row, col, number)) {
     return false;
   }
   board_[row][col] = number;
-  number_total_++;
   return true;
 }
 
@@ -51,7 +55,6 @@ size_t SudokuBoard::GetNumberTotal() const {
   return number_total_;
 }
 
-
 void SudokuBoard::GenerateNumbers(size_t number_total) {
   for (size_t count = 0; count < number_total; count++) {
     std::random_device rd;
@@ -59,12 +62,25 @@ void SudokuBoard::GenerateNumbers(size_t number_total) {
     size_t random_col = rd() % board_size_;
     size_t random_element = rd() % board_size_ + 1;
 
-    while (!InsertNumber(random_row, random_col, random_element)) {
+    while (!AddNumber(random_row, random_col, random_element)) {
       random_row = rd() % board_size_;
       random_col = rd() % board_size_;
       random_element = rd() % board_size_ + 1;
     }
     board_[random_row][random_col] = random_element;
+  }
+}
+
+void SudokuBoard::RemoveNumbers(size_t number_to_remove) {
+  for (size_t i = 0; i < number_to_remove; i++) {
+    std::random_device rd;
+    size_t random_row = rd() % board_size_;
+    size_t random_col = rd() % board_size_;
+    while (board_[random_row][random_col] != 0) {
+      random_row = rd() % board_size_;
+      random_col = rd() % board_size_;
+      board_[random_row][random_col] = 0;
+    }
   }
 }
 

@@ -26,15 +26,15 @@ TEST_CASE("Generate numbers on the board (size = 9)") {
     REQUIRE(game_board.GetNumberTotal() == 0);
   }
 
-  SECTION("Generate a board with the most numbers") {
-    game_board.GenerateValidBoard(35);
+  SECTION("Generate a full board") {
+    game_board.GenerateValidBoard(81);
     SudokuSolver solution(game_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 35);
+    REQUIRE(game_board.GetNumberTotal() == 81);
   }
 
   SECTION("Generate a board too many numbers") {
-    REQUIRE_THROWS_AS(game_board.GenerateValidBoard(36), std::invalid_argument);
+    REQUIRE_THROWS_AS(game_board.GenerateValidBoard(82), std::invalid_argument);
   }
   
   SECTION("Generate board with random size") {
@@ -42,5 +42,31 @@ TEST_CASE("Generate numbers on the board (size = 9)") {
     SudokuSolver solution(game_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
     REQUIRE(game_board.GetNumberTotal() == 20);
+  }
+}
+
+
+TEST_CASE("Generate numbers on the board (size = 4)") {
+  SudokuBoard game_board(4);
+
+  SECTION("Generate an empty board") {
+    game_board.GenerateValidBoard(0);
+    SudokuSolver solution(game_board.GetBoardNumbers());
+    REQUIRE(solution.Solve());
+    REQUIRE(game_board.GetNumberTotal() == 0);
+  }
+
+  SECTION("Generate a board with the most numbers") {
+    game_board.GenerateValidBoard(16);
+    SudokuSolver solution(game_board.GetBoardNumbers());
+    REQUIRE(solution.Solve());
+    REQUIRE(game_board.GetNumberTotal() == 16);
+  }
+
+  SECTION("Generate board with random size") {
+    game_board.GenerateValidBoard(7);
+    SudokuSolver solution(game_board.GetBoardNumbers());
+    REQUIRE(solution.Solve());
+    REQUIRE(game_board.GetNumberTotal() == 7);
   }
 }

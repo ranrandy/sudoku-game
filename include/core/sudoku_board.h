@@ -9,6 +9,9 @@ namespace sudokugame {
 
 using std::vector;
 
+/**
+ * A Sudoku board containing the data of one sudoku game.
+ */
 class SudokuBoard {
 public:
   /**
@@ -24,21 +27,6 @@ public:
   void GenerateValidBoard(size_t number_total);
   
   /**
-   * Insert a number to the board.
-   * @param row the row index to insert number
-   * @param col the column index to insert number
-   * @param number the number to be inserted to the board
-   * @return if the number is successfully inserted
-   */
-  bool InsertNumber(size_t row, size_t col, size_t number);
-  
-  /**
-   * Gets the board size.
-   * @return the size of the board
-   */
-  size_t GetBoardSize() const;
-
-  /**
    * Gets a 2D array containing the numbers on the board.
    * @return a 2D array containing the numbers on the board
    */
@@ -49,13 +37,21 @@ public:
    * @return the total number of numbers on the board
    */
   size_t GetNumberTotal() const;
+
+  /**
+   * Gets the board size.
+   * @return the size of the board
+   */
+  size_t GetBoardSize() const;
   
 private:
   const size_t kMaxBoardSize = 9;
   const size_t kMinBoardSize = 4;
-  const size_t kSizeNineMaxTotalNumber = 35;
+  const size_t kGeneratingParameter = 3;
   
+  bool AddNumber(size_t row, size_t col, size_t number);
   void GenerateNumbers(size_t number_total);
+  void RemoveNumbers(size_t number_to_remove);
   
   bool IsValidTile(size_t row, size_t col, size_t number) const;
   bool IsValidSubBoard(size_t row, size_t col, size_t number) const;
