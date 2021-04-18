@@ -12,26 +12,7 @@ GameBoard::GameBoard(const vec2& board_top_left,
       board_top_left_(board_top_left),
       board_bottom_right_(board_bottom_right), 
       sudoku_board(SudokuBoard(board_size)) {
-  std::random_device rd;
-  switch (level) {
-  case Level::kEasy:
-    sudoku_board.GenerateValidBoard(rd() % (kEasyLevelMaxTotal - 
-                                            kEasyLevelMinTotal) + 
-                                    kEasyLevelMinTotal);
-    break;
-  case Level::kMedium:
-    sudoku_board.GenerateValidBoard(rd() % (kMediumLevelMaxTotal - 
-                                            kMediumLevelMinTotal) + 
-                                    kMediumLevelMinTotal);
-    break;
-  case Level::kHard:
-    sudoku_board.GenerateValidBoard(rd() % (kHardLevelMaxTotal -
-                                            kHardLevelMinTotal) + 
-                                    kHardLevelMinTotal);
-    break;
-  default:
-    sudoku_board.GenerateValidBoard(kDefaultNumberTotal);
-  }
+  SetLevel(level);
 }
 
 void GameBoard::Draw() {
@@ -50,6 +31,29 @@ void GameBoard::Draw() {
 
   // Draw original numbers
   DrawNumbers();
+}
+
+void GameBoard::SetLevel(Level level) {
+  std::random_device rd;
+  switch (level) {
+  case Level::kEasy:
+    sudoku_board.GenerateValidBoard(rd() % (kEasyLevelMaxTotal -
+                                            kEasyLevelMinTotal) +
+                                    kEasyLevelMinTotal);
+    break;
+  case Level::kMedium:
+    sudoku_board.GenerateValidBoard(rd() % (kMediumLevelMaxTotal -
+                                            kMediumLevelMinTotal) +
+                                    kMediumLevelMinTotal);
+    break;
+  case Level::kHard:
+    sudoku_board.GenerateValidBoard(rd() % (kHardLevelMaxTotal -
+                                            kHardLevelMinTotal) +
+                                    kHardLevelMinTotal);
+    break;
+  default:
+    sudoku_board.GenerateValidBoard(kDefaultNumberTotal);
+  }
 }
 
 void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width, 

@@ -20,10 +20,13 @@ public:
     kMedium, 
     kHard
   };
+  
   GameBoard(const vec2& board_top_left, const vec2& board_right_bottom, 
-            size_t board_size, Level level);
+            size_t board_size, Level level = Level::kMedium);
 
   void Draw();
+  
+  void SetLevel(Level level);
 
 private:
   const ci::Color kBoardColor = "white";
