@@ -15,17 +15,32 @@ using std::vector;
 class SudokuBoard {
 public:
   /**
-   * Constructor for a sudoku game board.
+   * Constructs a sudoku board given the board size.
    * @param board_size the size of the board
    */
   SudokuBoard(size_t board_size);
+  
+  /**
+   * Constructs a sudoku board given the
+   * @param board 
+   */
+  SudokuBoard(const vector<vector<size_t>>& board);
   
   /**
    * Generate a valid board of numbers given the total number.
    * @param number_total the total number of numbers on the board
    */
   void GenerateValidBoard(size_t number_total);
-  
+
+  /** 
+   * Adds a number to the board.
+   * @param row the row index to add number
+   * @param col the column index to add number
+   * @param number the number to add
+   * @return if the number added conforms the rule of the game
+   */
+  bool AddNumber(size_t row, size_t col, size_t number);
+
   /**
    * Gets a 2D array containing the numbers on the board.
    * @return a 2D array containing the numbers on the board
@@ -49,7 +64,6 @@ private:
   const size_t kMinBoardSize = 4;
   const size_t kGeneratingParameter = 3;
   
-  bool AddNumber(size_t row, size_t col, size_t number);
   void GenerateNumbers(size_t number_total);
   void RemoveNumbers(size_t number_to_remove);
   

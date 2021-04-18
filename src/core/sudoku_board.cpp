@@ -14,9 +14,24 @@ SudokuBoard::SudokuBoard(size_t board_size) {
   }
 }
 
+SudokuBoard::SudokuBoard(const vector<vector<size_t>>& board) {
+  if (sqrt(board.size()) * sqrt(board.size()) == board.size() &&
+      board.size() >= kMinBoardSize && board.size() <= kMaxBoardSize) {
+    board_size_ = board.size();
+    board_ = board;
+  } else {
+    throw std::invalid_argument("This is an invalid board size.");
+  }
+}
+
 void SudokuBoard::GenerateValidBoard(size_t number_total) {
   if (number_total > board_size_ * board_size_) {
     throw std::invalid_argument("There are too many numbers");
+  }
+  
+  if (GetNumberTotal() > 0) {
+    board_ = vector<vector<size_t>>(board_size_,
+                                    vector<size_t>(board_size_, 0));
   }
   
   GenerateNumbers(board_size_ * board_size_ / kGeneratingParameter);
@@ -81,11 +96,11 @@ void SudokuBoard::RemoveNumbers(size_t number_to_remove) {
     std::random_device rd;
     size_t random_row = rd() % board_size_;
     size_t random_col = rd() % board_size_;
-    while (board_[random_row][random_col] != 0) {
+    while (board_[random_row][random_col] == 0) {
       random_row = rd() % board_size_;
       random_col = rd() % board_size_;
-      board_[random_row][random_col] = 0;
     }
+    board_[random_row][random_col] = 0;
   }
 }
 

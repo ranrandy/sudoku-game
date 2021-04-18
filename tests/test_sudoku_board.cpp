@@ -17,56 +17,106 @@ TEST_CASE("Generate a board with valid size") {
 }
 
 TEST_CASE("Generate numbers on the board (size = 9)") {
-  SudokuBoard game_board(9);
+  SudokuBoard sudoku_board(9);
 
   SECTION("Generate an empty board") {
-    game_board.GenerateValidBoard(0);
-    SudokuSolver solution(game_board.GetBoardNumbers());
+    sudoku_board.GenerateValidBoard(0);
+    SudokuSolver solution(sudoku_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 0);
+    REQUIRE(sudoku_board.GetNumberTotal() == 0);
   }
 
   SECTION("Generate a full board") {
-    game_board.GenerateValidBoard(81);
-    SudokuSolver solution(game_board.GetBoardNumbers());
+    sudoku_board.GenerateValidBoard(81);
+    SudokuSolver solution(sudoku_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 81);
+    REQUIRE(sudoku_board.GetNumberTotal() == 81);
   }
 
-  SECTION("Generate a board too many numbers") {
-    REQUIRE_THROWS_AS(game_board.GenerateValidBoard(82), std::invalid_argument);
+  SECTION("Generate a board with too many numbers") {
+    REQUIRE_THROWS_AS(sudoku_board.GenerateValidBoard(82), 
+                      std::invalid_argument);
   }
   
   SECTION("Generate board with random size") {
-    game_board.GenerateValidBoard(20);
-    SudokuSolver solution(game_board.GetBoardNumbers());
+    sudoku_board.GenerateValidBoard(20);
+    SudokuSolver solution(sudoku_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 20);
+    REQUIRE(sudoku_board.GetNumberTotal() == 20);
   }
 }
 
 
 TEST_CASE("Generate numbers on the board (size = 4)") {
-  SudokuBoard game_board(4);
+  SudokuBoard sudoku_board(4);
 
   SECTION("Generate an empty board") {
-    game_board.GenerateValidBoard(0);
-    SudokuSolver solution(game_board.GetBoardNumbers());
+    sudoku_board.GenerateValidBoard(0);
+    SudokuSolver solution(sudoku_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 0);
+    REQUIRE(sudoku_board.GetNumberTotal() == 0);
   }
 
   SECTION("Generate a board with the most numbers") {
-    game_board.GenerateValidBoard(16);
-    SudokuSolver solution(game_board.GetBoardNumbers());
+    sudoku_board.GenerateValidBoard(16);
+    SudokuSolver solution(sudoku_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 16);
+    REQUIRE(sudoku_board.GetNumberTotal() == 16);
+  }
+
+  SECTION("Generate a board too many numbers") {
+    REQUIRE_THROWS_AS(sudoku_board.GenerateValidBoard(17), 
+                      std::invalid_argument);
   }
 
   SECTION("Generate board with random size") {
-    game_board.GenerateValidBoard(7);
-    SudokuSolver solution(game_board.GetBoardNumbers());
+    sudoku_board.GenerateValidBoard(7);
+    SudokuSolver solution(sudoku_board.GetBoardNumbers());
     REQUIRE(solution.Solve());
-    REQUIRE(game_board.GetNumberTotal() == 7);
+    REQUIRE(sudoku_board.GetNumberTotal() == 7);
+  }
+}
+
+TEST_CASE("Add a number to the board") {
+  SudokuSolver::gameboard board = {
+      {5, 3, 0, 0, 7, 0, 0, 0, 0}, 
+      {6, 0, 0, 1, 9, 5, 0, 0, 0},
+      {0, 9, 8, 0, 0, 0, 0, 6, 0}, 
+      {8, 0, 0, 0, 6, 0, 0, 0, 3},
+      {4, 0, 0, 8, 0, 3, 0, 0, 1}, 
+      {7, 0, 0, 0, 2, 0, 0, 0, 6},
+      {0, 6, 0, 0, 0, 0, 2, 8, 0}, 
+      {0, 0, 0, 4, 1, 9, 0, 0, 5},
+      {0, 0, 0, 0, 8, 0, 0, 7, 9}};
+  SudokuBoard sudoku_board(board);
+
+  SECTION("Add to a position which already has a number") {
+    REQUIRE(!sudoku_board.AddNumber(0, 1, 1));
+    REQUIRE(sudoku_board.GetNumberTotal() == 30);
+    REQUIRE(sudoku_board.GetBoardNumbers()[0][1] == 3);
+  }
+
+  SECTION("Add to a position that violates the rule on row") {
+    REQUIRE(!sudoku_board.AddNumber(0, 2, 3));
+    REQUIRE(sudoku_board.GetNumberTotal() == 30);
+    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
+  }
+
+  SECTION("Add to a position that violates the rule on column") {
+    REQUIRE(!sudoku_board.AddNumber(0, 2, 8));
+    REQUIRE(sudoku_board.GetNumberTotal() == 30);
+    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
+  }
+
+  SECTION("Add to a position that violates the rule in sub board") {
+    REQUIRE(!sudoku_board.AddNumber(0, 2, 9));
+    REQUIRE(sudoku_board.GetNumberTotal() == 30);
+    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
+  }
+  
+  SECTION("Add to a position that is valid") {
+    REQUIRE(sudoku_board.AddNumber(0, 7, 1));
+    REQUIRE(sudoku_board.GetNumberTotal() == 31);
+    REQUIRE(sudoku_board.GetBoardNumbers()[0][7] == 1);
   }
 }
