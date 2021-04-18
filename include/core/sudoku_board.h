@@ -57,7 +57,6 @@ private:
   bool IsValidSubBoard(size_t row, size_t col, size_t number) const;
   
   size_t board_size_;
-  size_t number_total_;
 
   vector<vector<size_t>> board_;
 };

@@ -7,7 +7,6 @@ SudokuBoard::SudokuBoard(size_t board_size) {
   if (sqrt(board_size) * sqrt(board_size) == board_size && 
       board_size >= kMinBoardSize && board_size <= kMaxBoardSize) {
     board_size_ = board_size;
-    number_total_ = 0;
     board_ = vector<vector<size_t>>(board_size_, 
                                     vector<size_t>(board_size_, 0));
   } else {
@@ -20,8 +19,6 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
     throw std::invalid_argument("There are too many numbers");
   }
   
-  number_total_ = number_total;
-  
   GenerateNumbers(board_size_ * board_size_ / kGeneratingParameter);
   while (!SudokuSolver(board_).Solve()) {
     board_ = vector<vector<size_t>>(board_size_, 
@@ -32,7 +29,7 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
   SudokuSolver sudoku_solver(board_);
   sudoku_solver.Solve();
   board_ = sudoku_solver.GetSolution();
-  RemoveNumbers(board_size_ * board_size_ - number_total_);
+  RemoveNumbers(board_size_ * board_size_ - number_total);
 }
 
 bool SudokuBoard::AddNumber(size_t row, size_t col, size_t number) {
@@ -52,7 +49,15 @@ const vector<vector<size_t>>& SudokuBoard::GetBoardNumbers() const {
 }
 
 size_t SudokuBoard::GetNumberTotal() const {
-  return number_total_;
+  size_t number_total = 0;
+  for (const std::vector<size_t>& row : board_) {
+    for (size_t col : row) {
+      if (col != 0) {
+        number_total++;
+      }
+    }
+  }
+  return number_total;
 }
 
 void SudokuBoard::GenerateNumbers(size_t number_total) {
