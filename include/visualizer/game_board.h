@@ -5,6 +5,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
 #include "core/sudoku_board.h"
+#include "core/sudoku_solver.h"
 
 namespace sudokugame {
 
@@ -27,6 +28,7 @@ public:
   void Draw();
   
   void SetLevel(Level level);
+  bool ShowSolution();
 
 private:
   const ci::Color kBoardColor = "white";
@@ -51,7 +53,7 @@ private:
   vec2 board_top_left_;
   vec2 board_bottom_right_;
   
-  SudokuBoard sudoku_board;
+  SudokuBoard sudoku_board_;
 };
 
 } // visualizer

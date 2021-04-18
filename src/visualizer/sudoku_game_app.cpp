@@ -18,27 +18,8 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 }
 
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
-  for (size_t level = 0; level < kTotalLevels; level++) {
-    if (abs(level_centers_[level].x - float(event.getX())) < 
-            (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 && 
-        abs(level_centers_[level].y - float(event.getY())) < 
-            (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
-      std::cout << "??" << std::endl;
-      switch (level) {
-      case 0:
-        game_board_.SetLevel(GameBoard::Level::kEasy);
-        break;
-      case 1:
-        game_board_.SetLevel(GameBoard::Level::kMedium);
-        break;
-      case 2:
-        game_board_.SetLevel(GameBoard::Level::kHard);
-        break;
-      default:
-        game_board_.SetLevel(GameBoard::Level::kMedium);
-      }
-    }
-  }
+  ChangeLevels(event);
+  ShowSolution(event);
 }
 
 void SudokuGameApp::draw() {
@@ -47,6 +28,8 @@ void SudokuGameApp::draw() {
   game_board_.Draw();
   
   DrawLevelBox();
+  
+  DrawSolutionBox(solution_status);
 }
 
 void SudokuGameApp::update() {
@@ -84,6 +67,57 @@ void SudokuGameApp::DrawLevelBox() {
                              kLevelBoxEdgeColor);
   ci::gl::drawStringCentered(kHardLevel, level_centers_.at(2), 
                              kLevelBoxEdgeColor);
+}
+
+void SudokuGameApp::ChangeLevels(ci::app::MouseEvent event) {
+  for (size_t level = 0; level < kTotalLevels; level++) {
+    if (abs(level_centers_[level].x - float(event.getX())) <
+        (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 &&
+        abs(level_centers_[level].y - float(event.getY())) <
+        (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
+      switch (level) {
+      case 0:
+        game_board_.SetLevel(GameBoard::Level::kEasy);
+        break;
+      case 1:
+        game_board_.SetLevel(GameBoard::Level::kMedium);
+        break;
+      case 2:
+        game_board_.SetLevel(GameBoard::Level::kHard);
+        break;
+      default:
+        game_board_.SetLevel(GameBoard::Level::kMedium);
+      }
+    }
+  }
+}
+
+void SudokuGameApp::DrawSolutionBox(const std::string& solution_status) {
+  ci::Rectf solution_box(kSolutionBoxTopLeft, kSolutionBoxBottomRight);
+  ci::gl::color(kSolutionBoxColor);
+  ci::gl::drawSolidRect(solution_box);
+  ci::gl::color(kSolutionBoxEdgeColor);
+  ci::gl::drawStrokedRect(solution_box, kSolutionBoxEdgeWidth);
+  
+  vec2 solution_string_center = 
+      vec2((kSolutionBoxTopLeft.x + kSolutionBoxBottomRight.x) / 2,
+           (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 2);
+  ci::gl::drawStringCentered(solution_status, solution_string_center, 
+                             kSolutionBoxEdgeColor);
+}
+
+void SudokuGameApp::ShowSolution(ci::app::MouseEvent event) {
+  vec2 solution_string_center =
+      vec2((kSolutionBoxTopLeft.x + kSolutionBoxBottomRight.x) / 2,
+           (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 2);
+  if (abs(solution_string_center.x - float(event.getX())) < 
+          (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 && 
+      abs(solution_string_center.y - float(event.getY())) < 
+          (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
+    if (!game_board_.ShowSolution()) {
+      solution_status = kNoSolutionString;
+    }
+  }
 }
 
 }

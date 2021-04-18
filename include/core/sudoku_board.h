@@ -59,6 +59,8 @@ public:
    */
   size_t GetBoardSize() const;
   
+  void SetBoardNumbers(const vector<vector<size_t>>& board);
+  
 private:
   const size_t kMaxBoardSize = 9;
   const size_t kMinBoardSize = 4;

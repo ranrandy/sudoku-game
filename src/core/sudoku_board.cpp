@@ -75,6 +75,10 @@ size_t SudokuBoard::GetNumberTotal() const {
   return number_total;
 }
 
+void SudokuBoard::SetBoardNumbers(const vector<vector<size_t>>& board) {
+  board_ = board;
+}
+
 void SudokuBoard::GenerateNumbers(size_t number_total) {
   for (size_t count = 0; count < number_total; count++) {
     std::random_device rd;

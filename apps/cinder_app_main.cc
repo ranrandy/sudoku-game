@@ -1,6 +1,6 @@
-#include "sudoku_game_app.h"
+#include "visualizer/sudoku_game_app.h"
 
-using sudokugame::SudokuGameApp;
+using sudokugame::visualizer::SudokuGameApp;
 
 void prepareSettings(SudokuGameApp::Settings* settings) {
   settings->setResizable(false);

@@ -11,7 +11,7 @@ GameBoard::GameBoard(const vec2& board_top_left,
     : board_size_(board_size), 
       board_top_left_(board_top_left),
       board_bottom_right_(board_bottom_right), 
-      sudoku_board(SudokuBoard(board_size)) {
+      sudoku_board_(SudokuBoard(board_size)) {
   SetLevel(level);
 }
 
@@ -37,22 +37,32 @@ void GameBoard::SetLevel(Level level) {
   std::random_device rd;
   switch (level) {
   case Level::kEasy:
-    sudoku_board.GenerateValidBoard(rd() % (kEasyLevelMaxTotal -
+    sudoku_board_.GenerateValidBoard(rd() % (kEasyLevelMaxTotal -
                                             kEasyLevelMinTotal) +
                                     kEasyLevelMinTotal);
     break;
   case Level::kMedium:
-    sudoku_board.GenerateValidBoard(rd() % (kMediumLevelMaxTotal -
+    sudoku_board_.GenerateValidBoard(rd() % (kMediumLevelMaxTotal -
                                             kMediumLevelMinTotal) +
                                     kMediumLevelMinTotal);
     break;
   case Level::kHard:
-    sudoku_board.GenerateValidBoard(rd() % (kHardLevelMaxTotal -
+    sudoku_board_.GenerateValidBoard(rd() % (kHardLevelMaxTotal -
                                             kHardLevelMinTotal) +
                                     kHardLevelMinTotal);
     break;
   default:
-    sudoku_board.GenerateValidBoard(kDefaultNumberTotal);
+    sudoku_board_.GenerateValidBoard(kDefaultNumberTotal);
+  }
+}
+
+bool GameBoard::ShowSolution() {
+  SudokuSolver sudoku_solver(sudoku_board_.GetBoardNumbers());
+  if (sudoku_solver.Solve()) {
+    sudoku_board_.SetBoardNumbers(sudoku_solver.GetSolution());
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -77,14 +87,14 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
 void GameBoard::DrawNumbers() {
   size_t square_length = (board_bottom_right_.x - board_top_left_.x) / 
                          board_size_;
-  for (size_t row = 0; row < sudoku_board.GetBoardSize(); ++row) {
-    for (size_t col = 0; col < sudoku_board.GetBoardSize(); ++col) {
-      if (sudoku_board.GetBoardNumbers()[row][col] != 0) {
+  for (size_t row = 0; row < sudoku_board_.GetBoardSize(); ++row) {
+    for (size_t col = 0; col < sudoku_board_.GetBoardSize(); ++col) {
+      if (sudoku_board_.GetBoardNumbers()[row][col] != 0) {
         vec2 square_center = board_top_left_ +
                              vec2((row + 0.5) * square_length,
                                   (col + 0.5) * square_length);
         ci::gl::drawStringCentered(
-            std::to_string(sudoku_board.GetBoardNumbers()[row][col]),
+            std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
             square_center, kSquareEdgeColor);
       }
     }

@@ -35,26 +35,38 @@ private:
   const size_t kTotalLevels = 3;
   
   const float kLevelBoxEdgeWidth = 2.0;
-  
+  const float kSolutionBoxEdgeWidth = 2.0;
+
   const std::string kEasyLevel = "Easy";
   const std::string kMediumLevel = "Medium";
   const std::string kHardLevel = "Hard";
+  const std::string kSolutionString = "Solution";
+  const std::string kNoSolutionString = "No Solution";
 
   const vec2 kBoardTopLeft = vec2(80, 80);
   const vec2 kBoardRightBottom = vec2(710, 710);
   const vec2 kLevelBoxTopLeft = vec2(800, 80);
   const vec2 kLevelBoxBottomRight = vec2(1000, 200);
+  const vec2 kSolutionBoxTopLeft = vec2(800, 280);
+  const vec2 kSolutionBoxBottomRight = vec2(1000, 320);
 
   // light yellow
   const ci::Color8u kBackGroundColor = ci::Color8u(255, 246, 148);
   const ci::Color kLevelBoxColor = "white";
   const ci::Color kLevelBoxEdgeColor = "black";
+  const ci::Color kSolutionBoxColor = "white";
+  const ci::Color kSolutionBoxEdgeColor = "black";
 
   void DrawLevelBox();
+  void ChangeLevels(ci::app::MouseEvent event);
+  
+  void DrawSolutionBox(const std::string& solution_status);
+  void ShowSolution(ci::app::MouseEvent event);
 
   GameBoard game_board_ = GameBoard(kBoardTopLeft, kBoardRightBottom,
                                     kBoardSize);
   std::vector<vec2> level_centers_;
+  std::string solution_status = kSolutionString;
 };
 
 } // namespace visualizer
