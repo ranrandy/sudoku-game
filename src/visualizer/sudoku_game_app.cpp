@@ -20,6 +20,7 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
   ChangeLevels(event);
   ShowSolution(event);
+  // game_board_.HandleAddNumber(event);
 }
 
 void SudokuGameApp::draw() {
@@ -30,6 +31,8 @@ void SudokuGameApp::draw() {
   DrawLevelBox();
   
   DrawSolutionBox(solution_status_);
+  
+  DrawKeyBoard();
 }
 
 void SudokuGameApp::update() {
@@ -120,6 +123,42 @@ void SudokuGameApp::ShowSolution(const ci::app::MouseEvent& event) {
       solution_status_ = kNoSolutionString;
     }
   }
+}
+
+void SudokuGameApp::DrawKeyBoard() {
+  ci::Rectf level_box(kKeyBoardTopLeft, kKeyBoardBottomRight);
+  ci::gl::color(kKeyBoardColor);
+  ci::gl::drawSolidRect(level_box);
+  ci::gl::color(kKeyBoardEdgeColor);
+  ci::gl::drawStrokedRect(level_box, kLevelBoxEdgeWidth);
+
+  size_t rect_width = (kKeyBoardBottomRight.x - kKeyBoardTopLeft.x) / 
+                      sqrt(kKeyBoardNumbers.size());
+  size_t rect_length = (kKeyBoardBottomRight.y - kKeyBoardTopLeft.y) / 
+                       sqrt(kKeyBoardNumbers.size());
+  for (size_t row = 0; row < sqrt(kKeyBoardNumbers.size()); ++row) {
+    for (size_t col = 0; col < sqrt(kKeyBoardNumbers.size()); ++col) {
+      vec2 square_top_left = kKeyBoardTopLeft +
+                             vec2(row * rect_width + 10,
+                                  col * rect_length + 10);
+      vec2 square_bottom_right = kKeyBoardTopLeft +
+                                 vec2((row + 1) * rect_width - 10,
+                                      (col + 1) * rect_length - 10);
+      ci::Rectf square_bounding_box(square_top_left,
+                                    square_bottom_right);
+      ci::gl::color(kKeyBoardEdgeColor);
+      ci::gl::drawStrokedRect(square_bounding_box, kKeyBoardEdgeWidth);
+      vec2 keyboard_center = vec2((square_top_left.x + 
+                                    square_bottom_right.x) / 2, 
+                                   (square_top_left.y + square_bottom_right.y) / 
+                                       kKeyBoardPosYParameter);
+      ci::gl::drawStringCentered(
+          std::to_string(kKeyBoardNumbers[col * sqrt(kKeyBoardNumbers.size()) + 
+                                          row]), keyboard_center, 
+          kKeyBoardEdgeColor, kKeyBoardFont);
+    }
+  }
+
 }
 
 }

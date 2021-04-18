@@ -36,14 +36,19 @@ private:
   
   const float kLevelBoxEdgeWidth = 2.0;
   const float kSolutionBoxEdgeWidth = 2.0;
+  const float kKeyBoardEdgeWidth = 2.0;
   const float kLevelBoxPosYParameter = 2.08;
   const float kSolutionBoxPosYParameter = 2.05;
+  const float kKeyBoardPosYParameter = 2.05;
+
 
   const std::string kEasyLevel = "Easy";
   const std::string kMediumLevel = "Medium";
   const std::string kHardLevel = "Hard";
   const std::string kSolutionString = "Solution";
   const std::string kNoSolutionString = "No Solution";
+  
+  const std::vector<size_t> kKeyBoardNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
   const vec2 kBoardTopLeft = vec2(80, 80);
   const vec2 kBoardRightBottom = vec2(710, 710);
@@ -51,22 +56,29 @@ private:
   const vec2 kLevelBoxBottomRight = vec2(1000, 200);
   const vec2 kSolutionBoxTopLeft = vec2(800, 280);
   const vec2 kSolutionBoxBottomRight = vec2(1000, 320);
+  const vec2 kKeyBoardTopLeft = vec2(800, 380);
+  const vec2 kKeyBoardBottomRight = vec2(1001, 680);
 
-  // light yellow
   const ci::Color8u kBackGroundColor = ci::Color8u(255, 246, 148);
   const ci::Color kLevelBoxColor = "white";
   const ci::Color kLevelBoxEdgeColor = "black";
   const ci::Color kSolutionBoxColor = "white";
   const ci::Color kSolutionBoxEdgeColor = "black";
+  const ci::Color kKeyBoardColor = "white";
+  const ci::Color kKeyBoardEdgeColor = "black";
 
   const Font kLevelFont = Font("Times New Roman", 24);
   const Font kSolutionFont = Font("Times New Roman", 30);
+  const Font kKeyBoardFont = Font("Times New Roman", 48);
+
 
   void DrawLevelBox();
   void ChangeLevels(const ci::app::MouseEvent& event);
   
   void DrawSolutionBox(const std::string& solution_status);
   void ShowSolution(const ci::app::MouseEvent& event);
+  
+  void DrawKeyBoard();
 
   GameBoard game_board_ = GameBoard(kBoardTopLeft, kBoardRightBottom,
                                     kBoardSize);
