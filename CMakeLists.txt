@@ -49,11 +49,13 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND SOURCE_FILES    src/game_board.cpp
-                            src/sudoku_game_app.cpp
-        src/sudoku_solution.cpp)
+list(APPEND SOURCE_FILES src/core/sudoku_board.cpp
+                         src/visualizer/sudoku_game_app.cpp
+                         src/visualizer/game_board.cpp
+                         src/core/sudoku_solver.cpp)
 
-list(APPEND TEST_FILES  tests/test_game_board.cpp)
+list(APPEND TEST_FILES tests/test_sudoku_board.cpp
+                       tests/test_sudoku_solver.cpp)
 
 ci_make_app(
         APP_NAME        sudoku-game
