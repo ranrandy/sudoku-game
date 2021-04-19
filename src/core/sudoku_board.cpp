@@ -47,6 +47,13 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
   RemoveNumbers(board_size_ * board_size_ - number_total);
 }
 
+void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
+  if (board_[position.x][position.y] == 0 && number < kMaxBoardSize &&
+      number != 0) {
+    board_[position.x][position.y] = number;
+  }
+}
+
 bool SudokuBoard::AddNumber(size_t row, size_t col, size_t number) {
   if (!IsValidTile(row, col, number)) {
     return false;

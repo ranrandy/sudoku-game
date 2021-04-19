@@ -32,14 +32,12 @@ public:
    */
   void GenerateValidBoard(size_t number_total);
 
-  /** 
-   * Adds a number to the board.
-   * @param row the row index to add number
-   * @param col the column index to add number
-   * @param number the number to add
-   * @return if the number added conforms the rule of the game
+  /**
+   * Adds a number that is added by the player to the board.
+   * @param position the position where the player adds number
+   * @param number the number to be added
    */
-  bool AddNumber(size_t row, size_t col, size_t number);
+  void AddNumber(const glm::vec2& position, size_t number);
 
   /**
    * Gets a 2D array containing the numbers on the board.
@@ -65,6 +63,15 @@ private:
   const size_t kMaxBoardSize = 9;
   const size_t kMinBoardSize = 4;
   const size_t kGeneratingParameter = 3;
+
+  /** 
+   * Adds a number to the board.
+   * @param row the row index to add number
+   * @param col the column index to add number
+   * @param number the number to add
+   * @return if the number added conforms the rule of the game
+   */
+  bool AddNumber(size_t row, size_t col, size_t number);
   
   void GenerateNumbers(size_t number_total);
   void RemoveNumbers(size_t number_to_remove);
