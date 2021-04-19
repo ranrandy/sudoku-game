@@ -8,7 +8,7 @@ using ci::app::KeyEvent;
 using sudokugame::visualizer::GameBoard;
 
 SudokuGameApp::SudokuGameApp() { 
-  setWindowSize(kWindowLength, kWindowWidth); 
+  setWindowSize(kWindowLength, kWindowWidth);
 }
 
 void SudokuGameApp::keyDown(KeyEvent event) {
@@ -20,7 +20,8 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
   ChangeLevels(event);
   ShowSolution(event);
-  game_board_.HandleAddNumber(event);
+  ClickKeyBoard(event);
+  game_board_.HandleAddNumber(event, clicked_key_);
 }
 
 void SudokuGameApp::draw() {
@@ -116,9 +117,9 @@ void SudokuGameApp::ShowSolution(const ci::app::MouseEvent& event) {
       vec2((kSolutionBoxTopLeft.x + kSolutionBoxBottomRight.x) / 2,
            (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 2);
   if (abs(solution_string_center.x - float(event.getX())) < 
-          (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 && 
+          (kSolutionBoxBottomRight.x - kSolutionBoxTopLeft.x) / 2 && 
       abs(solution_string_center.y - float(event.getY())) < 
-          (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
+          (kSolutionBoxBottomRight.y - kSolutionBoxTopLeft.y) / 2) {
     if (!game_board_.ShowSolution()) {
       solution_status_ = kNoSolutionString;
     }
@@ -136,14 +137,16 @@ void SudokuGameApp::DrawKeyBoard() {
                       sqrt(kKeyBoardNumbers.size());
   size_t rect_length = (kKeyBoardBottomRight.y - kKeyBoardTopLeft.y) / 
                        sqrt(kKeyBoardNumbers.size());
-  for (size_t row = 0; row < sqrt(kKeyBoardNumbers.size()); ++row) {
-    for (size_t col = 0; col < sqrt(kKeyBoardNumbers.size()); ++col) {
-      vec2 square_top_left = kKeyBoardTopLeft +
-                             vec2(row * rect_width + 10,
-                                  col * rect_length + 10);
-      vec2 square_bottom_right = kKeyBoardTopLeft +
-                                 vec2((row + 1) * rect_width - 10,
-                                      (col + 1) * rect_length - 10);
+  for (size_t row = 0; row < sqrt(kKeyBoardNumbers.size()); row++) {
+    for (size_t col = 0; col < sqrt(kKeyBoardNumbers.size()); col++) {
+      vec2 square_top_left = 
+          kKeyBoardTopLeft +
+          vec2(row * rect_width + kKeyBoardEdgeOffset,
+               col * rect_length + kKeyBoardEdgeOffset);
+      vec2 square_bottom_right = 
+          kKeyBoardTopLeft + 
+          vec2((row + 1) * rect_width - kKeyBoardEdgeOffset,
+               (col + 1) * rect_length - kKeyBoardEdgeOffset);
       ci::Rectf square_bounding_box(square_top_left,
                                     square_bottom_right);
       ci::gl::color(kKeyBoardEdgeColor);
@@ -158,7 +161,29 @@ void SudokuGameApp::DrawKeyBoard() {
           kKeyBoardEdgeColor, kKeyBoardFont);
     }
   }
+}
 
+void SudokuGameApp::ClickKeyBoard(const ci::app::MouseEvent& event) {
+  size_t rect_length = (kKeyBoardBottomRight.y - kKeyBoardTopLeft.y) / 
+                         sqrt(kKeyBoardNumbers.size());
+  size_t rect_width = (kKeyBoardBottomRight.x - kKeyBoardTopLeft.x) /
+                         sqrt(kKeyBoardNumbers.size());
+  vec2 clicked_key_position =
+      vec2((event.getX() - int(kKeyBoardTopLeft.x)) / rect_width,
+           (event.getY() - int(kKeyBoardTopLeft.y)) / rect_length);
+  
+  vec2 clicked_key_center = kKeyBoardTopLeft +
+                            vec2((clicked_key_position.x + 0.5) * rect_width,
+                                 (clicked_key_position.y + 0.5) * rect_length);
+
+  if (abs(int(clicked_key_center.x) - event.getX()) < 
+      rect_length / 2 - kKeyBoardEdgeOffset && 
+      abs(int(clicked_key_center.y) - event.getY()) <
+          rect_width / 2 - kKeyBoardEdgeOffset) {
+    clicked_key_ = kKeyBoardNumbers[clicked_key_position.y * 
+                                        sqrt(kKeyBoardNumbers.size()) + 
+                                    clicked_key_position.x];
+  }
 }
 
 }

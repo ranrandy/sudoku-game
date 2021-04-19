@@ -67,13 +67,24 @@ bool GameBoard::ShowSolution() {
   }
 }
 
-void GameBoard::HandleAddNumber(const ci::app::MouseEvent& event) {
-  size_t square_length = (board_bottom_right_.x - board_top_left_.x) /
-                         board_size_;
-  tile_to_add_number = 
-      vec2((event.getX() - int(board_top_left_.x)) / square_length, 
-           (event.getY() - int(board_top_left_.y)) / square_length);
-  std::cout << tile_to_add_number.x << " and " << tile_to_add_number.y << std::endl;
+void GameBoard::HandleAddNumber(const ci::app::MouseEvent& event, 
+                                size_t number) {
+  vec2 game_board_center =
+      vec2((board_top_left_.x + board_bottom_right_.x) / 2,
+           (board_top_left_.y + board_bottom_right_.y) / 2);
+  if (abs(game_board_center.x - float(event.getX())) <
+      (board_bottom_right_.x - board_top_left_.x) / 2 &&
+      abs(game_board_center.y - float(event.getY())) <
+      (board_bottom_right_.y - board_top_left_.y) / 2) {
+    size_t square_length = (board_bottom_right_.x - board_top_left_.x) /
+                           board_size_;
+    tile_to_add_number =
+        vec2((event.getX() - int(board_top_left_.x)) / square_length,
+             (event.getY() - int(board_top_left_.y)) / square_length);
+    if (tile_to_add_number != kDefaultTileToAddNumberPosition) {
+      sudoku_board_.AddNumber(tile_to_add_number, number);
+    }
+  }
 }
 
 void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width, 
@@ -88,10 +99,13 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
                                       (col + 1) * square_length);
       ci::Rectf square_bounding_box(square_top_left, 
                                     square_bottom_right);
-      if (vec2(row, col) == tile_to_add_number && is_tile) {
+      /*
+      if (vec2(row, col) == tile_to_add_number && is_tile && 
+          sudoku_board_.GetBoardNumbers()[row][col] == 0) {
         ci::gl::color(kTileToAddNumberColor);
         ci::gl::drawSolidRect(square_bounding_box);
       }
+      */
       ci::gl::color(kSquareEdgeColor);
       ci::gl::drawStrokedRect(square_bounding_box, edge_line_width);
     }

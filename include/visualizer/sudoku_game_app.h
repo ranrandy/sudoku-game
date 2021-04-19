@@ -33,14 +33,14 @@ private:
   
   const size_t kBoardSize = 9;
   const size_t kTotalLevels = 3;
-  
+  const size_t kKeyBoardEdgeOffset = 10;
+
   const float kLevelBoxEdgeWidth = 2.0;
   const float kSolutionBoxEdgeWidth = 2.0;
   const float kKeyBoardEdgeWidth = 2.0;
   const float kLevelBoxPosYParameter = 2.08;
   const float kSolutionBoxPosYParameter = 2.05;
   const float kKeyBoardPosYParameter = 2.05;
-
 
   const std::string kEasyLevel = "Easy";
   const std::string kMediumLevel = "Medium";
@@ -70,8 +70,7 @@ private:
   const Font kLevelFont = Font("Times New Roman", 24);
   const Font kSolutionFont = Font("Times New Roman", 30);
   const Font kKeyBoardFont = Font("Times New Roman", 48);
-
-
+  
   void DrawLevelBox();
   void ChangeLevels(const ci::app::MouseEvent& event);
   
@@ -79,7 +78,10 @@ private:
   void ShowSolution(const ci::app::MouseEvent& event);
   
   void DrawKeyBoard();
-
+  void ClickKeyBoard(const ci::app::MouseEvent& event);
+  
+  size_t clicked_key_;
+  
   GameBoard game_board_ = GameBoard(kBoardTopLeft, kBoardRightBottom,
                                     kBoardSize);
   std::vector<vec2> level_centers_;

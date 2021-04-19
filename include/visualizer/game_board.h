@@ -31,7 +31,7 @@ public:
   
   void SetLevel(Level level);
   bool ShowSolution();
-  void HandleAddNumber(const ci::app::MouseEvent& event);
+  void HandleAddNumber(const ci::app::MouseEvent& event, size_t number);
 
 private:
   const ci::Color kBoardColor = "white";
