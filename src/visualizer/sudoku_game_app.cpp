@@ -20,7 +20,7 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
   ChangeLevels(event);
   ShowSolution(event);
-  // game_board_.HandleAddNumber(event);
+  game_board_.HandleAddNumber(event);
 }
 
 void SudokuGameApp::draw() {

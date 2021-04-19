@@ -31,10 +31,12 @@ public:
   
   void SetLevel(Level level);
   bool ShowSolution();
+  void HandleAddNumber(const ci::app::MouseEvent& event);
 
 private:
   const ci::Color kBoardColor = "white";
   const ci::Color kSquareEdgeColor = "black";
+  const ci::Color8u kTileToAddNumberColor = ci::Color8u(255, 246, 148);
 
   const size_t kDefaultNumberTotal = 30;
   const size_t kEasyLevelMaxTotal = 44;
@@ -49,15 +51,19 @@ private:
   const float kNumberPosXParameter = 0.5;
   const float kNumberPosYParameter = 0.25;
 
+  const vec2 kDefaultTileToAddNumberPosition = vec2(-1, -1);
+
   const Font kNumberFont = Font("Times New Roman", 48);
   
-  void DrawSquares(size_t square_length, size_t edge_line_width, size_t number);
+  void DrawSquares(size_t square_length, size_t edge_line_width, size_t number, 
+                   bool is_tile = true);
   void DrawNumbers();
   
   size_t board_size_;
   
   vec2 board_top_left_;
   vec2 board_bottom_right_;
+  vec2 tile_to_add_number;
   
   SudokuBoard sudoku_board_;
 };

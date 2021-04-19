@@ -13,6 +13,7 @@ GameBoard::GameBoard(const vec2& board_top_left,
       board_bottom_right_(board_bottom_right), 
       sudoku_board_(SudokuBoard(board_size)) {
   SetLevel(level);
+  tile_to_add_number = kDefaultTileToAddNumberPosition;
 }
 
 void GameBoard::Draw() {
@@ -27,7 +28,7 @@ void GameBoard::Draw() {
 
   // Draw sub boards
   DrawSquares((board_bottom_right_.x - board_top_left_.x) / sqrt(board_size_),
-              kSubBoardLineWidth, board_size_);
+              kSubBoardLineWidth, board_size_, false);
 
   // Draw original numbers
   DrawNumbers();
@@ -66,8 +67,17 @@ bool GameBoard::ShowSolution() {
   }
 }
 
+void GameBoard::HandleAddNumber(const ci::app::MouseEvent& event) {
+  size_t square_length = (board_bottom_right_.x - board_top_left_.x) /
+                         board_size_;
+  tile_to_add_number = 
+      vec2((event.getX() - int(board_top_left_.x)) / square_length, 
+           (event.getY() - int(board_top_left_.y)) / square_length);
+  std::cout << tile_to_add_number.x << " and " << tile_to_add_number.y << std::endl;
+}
+
 void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width, 
-                            size_t number) {
+                            size_t number, bool is_tile) {
   for (size_t row = 0; row < sqrt(number); ++row) {
     for (size_t col = 0; col < sqrt(number); ++col) {
       vec2 square_top_left = board_top_left_ + 
@@ -78,6 +88,10 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
                                       (col + 1) * square_length);
       ci::Rectf square_bounding_box(square_top_left, 
                                     square_bottom_right);
+      if (vec2(row, col) == tile_to_add_number && is_tile) {
+        ci::gl::color(kTileToAddNumberColor);
+        ci::gl::drawSolidRect(square_bounding_box);
+      }
       ci::gl::color(kSquareEdgeColor);
       ci::gl::drawStrokedRect(square_bounding_box, edge_line_width);
     }
