@@ -6,6 +6,7 @@
 using sudokugame::SudokuBoard;
 using sudokugame::SudokuSolver;
 using std::vector;
+using glm::vec2;
 
 TEST_CASE("Generate a board with valid size") {
   REQUIRE_THROWS_AS(SudokuBoard(-1), std::invalid_argument);
@@ -91,31 +92,31 @@ TEST_CASE("Add a number to the board") {
   SudokuBoard sudoku_board(board);
 
   SECTION("Add to a position which already has a number") {
-    REQUIRE(!sudoku_board.AddNumber(0, 1, 1));
+    sudoku_board.AddNumber(vec2(0, 1), 1);
     REQUIRE(sudoku_board.GetNumberTotal() == 30);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][1] == 3);
   }
 
   SECTION("Add to a position that violates the rule on row") {
-    REQUIRE(!sudoku_board.AddNumber(0, 2, 3));
+    sudoku_board.AddNumber(vec2(0, 2), 3);
     REQUIRE(sudoku_board.GetNumberTotal() == 30);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
   }
 
   SECTION("Add to a position that violates the rule on column") {
-    REQUIRE(!sudoku_board.AddNumber(0, 2, 8));
+    sudoku_board.AddNumber(vec2(0, 2), 8);
     REQUIRE(sudoku_board.GetNumberTotal() == 30);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
   }
 
   SECTION("Add to a position that violates the rule in sub board") {
-    REQUIRE(!sudoku_board.AddNumber(0, 2, 9));
+    sudoku_board.AddNumber(vec2(0, 2), 9);
     REQUIRE(sudoku_board.GetNumberTotal() == 30);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
   }
   
   SECTION("Add to a position that is valid") {
-    REQUIRE(sudoku_board.AddNumber(0, 7, 1));
+    sudoku_board.AddNumber(vec2(0, 7), 1);
     REQUIRE(sudoku_board.GetNumberTotal() == 31);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][7] == 1);
   }
