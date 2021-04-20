@@ -32,11 +32,17 @@ public:
   void SetLevel(Level level);
   bool ShowSolution();
   void HandleAddNumber(const ci::app::MouseEvent& event, size_t number);
+  void HandleHighlighting(const ci::app::MouseEvent& event);
 
 private:
-  const ci::Color kBoardColor = "white";
+  const ci::Color kBoardColor = ci::Color8u(219, 229, 214);
   const ci::Color kSquareEdgeColor = "black";
-  const ci::Color8u kTileToAddNumberColor = ci::Color8u(255, 246, 148);
+  const ci::Color kRelatedTileColor = ci::Color8u(207, 231, 196);
+  const ci::Color kClickedOriginalTileColor = ci::Color8u(78, 123, 77);
+  const ci::Color kClickedEmptyTileColor = ci::Color8u(167, 211, 151);
+  const ci::Color kSameNumberTileColor = ci::Color8u(132, 172, 68);
+  const ci::Color kSameNumberTileNumberColor = "white";
+
 
   const size_t kDefaultNumberTotal = 30;
   const size_t kEasyLevelMaxTotal = 44;
@@ -45,14 +51,13 @@ private:
   const size_t kMediumLevelMinTotal = 33;
   const size_t kHardLevelMaxTotal = 32;
   const size_t kHardLevelMinTotal = 22;
+  const size_t kBoardSize = 9;
   
   const float kSubBoardLineWidth = 3.0;
   const float kTileLineWidth = 1.0;
   const float kNumberPosXParameter = 0.5;
   const float kNumberPosYParameter = 0.25;
-
-  const vec2 kDefaultTileToAddNumberPosition = vec2(-1, -1);
-
+  
   const Font kNumberFont = Font("Times New Roman", 48);
   
   void DrawSquares(size_t square_length, size_t edge_line_width, size_t number, 
@@ -63,8 +68,10 @@ private:
   
   vec2 board_top_left_;
   vec2 board_bottom_right_;
-  vec2 tile_to_add_number;
-  
+  vec2 clicked_tile_;
+  std::vector<vec2> tiles_to_highlight;
+  std::vector<vec2> same_number_tiles_to_highlight;
+
   SudokuBoard sudoku_board_;
 };
 

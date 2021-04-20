@@ -59,12 +59,12 @@ private:
   const vec2 kKeyBoardTopLeft = vec2(800, 380);
   const vec2 kKeyBoardBottomRight = vec2(1001, 680);
 
-  const ci::Color8u kBackGroundColor = ci::Color8u(255, 246, 148);
-  const ci::Color kLevelBoxColor = "white";
+  const ci::Color8u kBackGroundColor = ci::Color8u(219, 229, 214);
+  const ci::Color kLevelBoxColor = ci::Color8u(219, 229, 214);
   const ci::Color kLevelBoxEdgeColor = "black";
-  const ci::Color kSolutionBoxColor = "white";
+  const ci::Color kSolutionBoxColor = ci::Color8u(219, 229, 214);
   const ci::Color kSolutionBoxEdgeColor = "black";
-  const ci::Color kKeyBoardColor = "white";
+  const ci::Color kKeyBoardColor = ci::Color8u(219, 229, 214);
   const ci::Color kKeyBoardEdgeColor = "black";
 
   const Font kLevelFont = Font("Times New Roman", 24);

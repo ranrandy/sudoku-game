@@ -21,6 +21,7 @@ void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
   ChangeLevels(event);
   ShowSolution(event);
   ClickKeyBoard(event);
+  game_board_.HandleHighlighting(event);
   game_board_.HandleAddNumber(event, clicked_key_);
 }
 

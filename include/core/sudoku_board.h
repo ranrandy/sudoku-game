@@ -22,7 +22,7 @@ public:
   
   /**
    * Constructs a sudoku board given the
-   * @param board 
+   * @param board a 2d array consisting numbers in it
    */
   SudokuBoard(const vector<vector<size_t>>& board);
   
