@@ -16,34 +16,85 @@ using sudokugame::SudokuBoard;
 using ci::Font;
 using glm::vec2;
 
+/**
+ * Displays the game board on the screen
+ */
 class GameBoard {
 public:
+  // Represents different levels of the sudoku game
   enum class Level {
     kEasy, 
     kMedium, 
     kHard
   };
   
+  /**
+   * Constructs a board on the screen
+   * @param board_top_left the top left position of this board
+   * @param board_right_bottom the bottom right position of this board
+   * @param board_size the size (length) of the board
+   * @param level the level of the game (in default: Medium)
+   */
   GameBoard(const vec2& board_top_left, const vec2& board_right_bottom, 
             size_t board_size, Level level = Level::kMedium);
 
+  /**
+   * Draw the game board.
+   */
   void Draw();
   
+  /**
+   * Sets level for the game and generate a new board for the new level.
+   * @param level the level of the game
+   */
   void SetLevel(Level level);
+  
+  /**
+   * Shows a solution (full) board of the game
+   * @return if the board has a solution
+   */
   bool ShowSolution();
+  
+  /**
+   * Adds a number to the board on the screen.
+   * @param number the number to be added
+   */
   void AddNumber(size_t number);
+  
+  /**
+   * Handles highlighting related row, column and sub board on the screen.
+   * @param event the mouse event
+   */
   void HandleHighlighting(const ci::app::MouseEvent& event);
   
 private:
+  // Board background color
   const ci::Color kBoardColor = ci::Color8u(219, 229, 214);
+  
+  // Board margin color
   const ci::Color kSquareEdgeColor = "black";
+  
+  // Related tiles highlighting color
   const ci::Color kRelatedTileColor = ci::Color8u(207, 231, 196);
+  
+  // If the player clicks on a tile that has been filled with some number, 
+  // the color of that tile
   const ci::Color kClickedOriginalTileColor = ci::Color8u(78, 123, 77);
+  
+  // If the player clicks on an empty tile, the color of that empty tile
   const ci::Color kClickedEmptyTileColor = ci::Color8u(167, 211, 151);
+  
+  // If the player clicks on a tile with some number, 
+  // the color of those tiles who are filled with the same number and 
+  // those numbers
   const ci::Color kSameNumberTileColor = ci::Color8u(132, 172, 68);
   const ci::Color kSameNumberTileNumberColor = "white";
+  
+  // The color of numbers who are added by the player
+  // but not originally generated
   const ci::Color kAddedNumberTileColor = "yellow";
 
+  // Different total number range in different game levels
   const size_t kDefaultNumberTotal = 30;
   const size_t kEasyLevelMaxTotal = 44;
   const size_t kEasyLevelMinTotal = 39;
@@ -51,19 +102,36 @@ private:
   const size_t kMediumLevelMinTotal = 33;
   const size_t kHardLevelMaxTotal = 32;
   const size_t kHardLevelMinTotal = 22;
+  
   const size_t kBoardSize = 9;
   
   const float kSubBoardLineWidth = 3.0;
   const float kTileLineWidth = 1.0;
+  
+  // Parameters to fit the location of number strings on the screen to the tiles
   const float kNumberPosXParameter = 0.5;
   const float kNumberPosYParameter = 0.25;
   
   const Font kNumberFont = Font("Times New Roman", 48);
   
+  /**
+   * Draws squares on the screen.
+   * @param square_length the size (length) of each square
+   * @param edge_line_width the width of the margin line of the square
+   * @param number the number of squares to draw
+   * @param is_tile if the square to be drawn is a tile
+   */
   void DrawSquares(size_t square_length, size_t edge_line_width, size_t number, 
                    bool is_tile = true);
+  
+  /**
+   * Draws number strings on the screen.
+   */
   void DrawNumbers();
   
+  /**
+   * Initiate vectors related to highlighting.
+   */
   void InitiateHighlighting();
   
   size_t board_size_;

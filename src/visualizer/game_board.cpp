@@ -16,7 +16,7 @@ GameBoard::GameBoard(const vec2& board_top_left,
 }
 
 void GameBoard::Draw() {
-  // Draw board contents
+  // Draw board background
   ci::Rectf board_bounding_box(board_top_left_, board_bottom_right_);
   ci::gl::color(kBoardColor);
   ci::gl::drawSolidRect(board_bounding_box);
@@ -92,6 +92,8 @@ void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
     clicked_tile_ = vec2(clicked_tile_x, clicked_tile_y);
     size_t tile_number = sudoku_board_.GetBoardNumbers()[clicked_tile_x]
                                                         [clicked_tile_y];
+    
+    // Checks if the tile clicked is empty or not.
     if (tile_number != 0) {
       for (size_t row = 0; row < board_size_; row++) {
         for (size_t col = 0; col < board_size_; col++) {
@@ -102,11 +104,13 @@ void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
       }
     }
     
+    // Stores tiles in the same column and same row with the clicked tile.
     for (size_t i = 0; i < kBoardSize; i++) {
       tiles_to_highlight_.emplace_back(vec2(clicked_tile_x, i));
       tiles_to_highlight_.emplace_back(vec2(i, clicked_tile_y));
     }
     
+    // Stores tiles in the same sub board with the clicked tile.
     size_t sub_board_size = sqrt(board_size_);
     size_t sub_board_row = clicked_tile_x / sub_board_size * sub_board_size;
     size_t sub_board_col = clicked_tile_y / sub_board_size * sub_board_size;
@@ -132,18 +136,22 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
       ci::Rectf square_bounding_box(square_top_left, 
                                     square_bottom_right);
       
+      // Checks if the tile is clicked tile and the tile is empty.
       if (vec2(row, col) == clicked_tile_ && is_tile && 
           sudoku_board_.GetBoardNumbers()[row][col] == 0) {
         ci::gl::color(kClickedEmptyTileColor);
         ci::gl::drawSolidRect(square_bounding_box);
       }
 
+      // Checks iif the tile is clicked tile but is not empty.
       if (vec2(row, col) == clicked_tile_ && is_tile &&
           sudoku_board_.GetBoardNumbers()[row][col] != 0) {
         ci::gl::color(kClickedOriginalTileColor);
         ci::gl::drawSolidRect(square_bounding_box);
       }
       
+      // Highlights those tiles which are in the same row, column or 
+      // sub board with the clicked tile.
       for (const vec2& tile_to_highlight : tiles_to_highlight_) {
         if (vec2(row, col) == tile_to_highlight && 
             vec2(row, col) != clicked_tile_ && is_tile) {
@@ -152,6 +160,8 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
         }
       }
       
+      // Highlights the tiles who are filled in with the same color as
+      // the clicked tile
       for (const vec2& same_number_tile_to_highlight : 
            same_number_tiles_to_highlight_) {
         if (vec2(row, col) == same_number_tile_to_highlight &&
@@ -161,6 +171,7 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
         }
       }
       
+      // Draw the margin lines of each square.
       ci::gl::color(kSquareEdgeColor);
       ci::gl::drawStrokedRect(square_bounding_box, edge_line_width);
     }
@@ -181,8 +192,11 @@ void GameBoard::DrawNumbers() {
             std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
             square_center, kSquareEdgeColor, kNumberFont);
         
+        // Highlights the tiles who are filled with the same number
+        // as the clicked tile
         for (const vec2& same_number_tile_to_highlight : 
              same_number_tiles_to_highlight_) {
+          // The tile is not the clicked tile itself.
           if (vec2(row, col) == same_number_tile_to_highlight &&
               vec2(row, col) != clicked_tile_) {
             ci::gl::drawStringCentered(
@@ -190,6 +204,7 @@ void GameBoard::DrawNumbers() {
                 square_center, kSameNumberTileNumberColor, kNumberFont);
           }
 
+          // The tile is the clicked tile itself.
           if (vec2(row, col) == clicked_tile_ &&
               sudoku_board_.GetBoardNumbers()[row][col] != 0) {
             ci::gl::drawStringCentered(
@@ -198,6 +213,7 @@ void GameBoard::DrawNumbers() {
           }
         }
 
+        // Draws the player added numbers with some different color.
         for (const vec2& tile_added_number :
             sudoku_board_.GetTilesAddedNumber()) {
           if (vec2(row, col) == tile_added_number) {
@@ -215,11 +231,13 @@ void GameBoard::InitiateHighlighting() {
   tiles_to_highlight_.clear();
   same_number_tiles_to_highlight_.clear();
   
+  // Stores the tiles whose row or column index is same as the clicked tile.
   for (size_t i = 0; i < kBoardSize; i++) {
     tiles_to_highlight_.emplace_back(vec2(clicked_tile_.x, i));
     tiles_to_highlight_.emplace_back(vec2(i, clicked_tile_.y));
   }
 
+  // Stores the tiles that are in the same sub board as with the clicked tile.
   size_t sub_board_size = sqrt(board_size_);
   size_t sub_board_row = clicked_tile_.x / sub_board_size * sub_board_size;
   size_t sub_board_col = clicked_tile_.y / sub_board_size * sub_board_size;
@@ -229,8 +247,9 @@ void GameBoard::InitiateHighlighting() {
     }
   }
 
+  // Stores the tiles who are filled with the same color as the clicked tile.
   size_t tile_number = sudoku_board_.GetBoardNumbers()[clicked_tile_.x]
-  [clicked_tile_.y];
+                                                      [clicked_tile_.y];
   if (tile_number != 0) {
     for (size_t row = 0; row < board_size_; row++) {
       for (size_t col = 0; col < board_size_; col++) {
