@@ -19,11 +19,32 @@ using glm::vec2;
  */
 class SudokuGameApp : public ci::app::App {
 public:
+  /**
+   * Default Constructor for a sudoku game app.
+   */
   SudokuGameApp();
 
+  /**
+   * Handles key events.
+   * @param event key event on the keyboard
+   */
   void keyDown(KeyEvent event) override;
+  
+  /**
+   * Handles mouse events.
+   * @param event mouse event on a mouse
+   */
   void mouseDown(ci::app::MouseEvent event) override;
+  
+  /**
+   * Draws the screen based on components 
+   * including game board, level box, solution box and keyboard box.
+   */
   void draw() override;
+  
+  /**
+   * Updates the screen per frame.
+   */
   void update() override;
 
 private:
