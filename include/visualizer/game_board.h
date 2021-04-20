@@ -64,6 +64,8 @@ private:
                    bool is_tile = true);
   void DrawNumbers();
   
+  void InitiateHighlighting();
+  
   size_t board_size_;
   
   vec2 board_top_left_;

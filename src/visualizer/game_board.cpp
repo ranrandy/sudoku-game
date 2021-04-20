@@ -13,32 +13,6 @@ GameBoard::GameBoard(const vec2& board_top_left,
       board_bottom_right_(board_bottom_right), 
       sudoku_board_(SudokuBoard(board_size)) {
   SetLevel(level);
-
-  for (size_t i = 0; i < kBoardSize; i++) {
-    tiles_to_highlight_.emplace_back(vec2(clicked_tile_.x, i));
-    tiles_to_highlight_.emplace_back(vec2(i, clicked_tile_.y));
-  }
-
-  size_t sub_board_size = sqrt(board_size_);
-  size_t sub_board_row = clicked_tile_.x / sub_board_size * sub_board_size;
-  size_t sub_board_col = clicked_tile_.y / sub_board_size * sub_board_size;
-  for (size_t i = 0; i < sub_board_size; i++) {
-    for (size_t j = 0; j < sub_board_size; j++) {
-      tiles_to_highlight_.emplace_back(vec2(i+sub_board_row, j+sub_board_col));
-    }
-  }
-
-  size_t tile_number = sudoku_board_.GetBoardNumbers()[clicked_tile_.x]
-                                                      [clicked_tile_.y];
-  if (tile_number != 0) {
-    for (size_t row = 0; row < board_size_; row++) {
-      for (size_t col = 0; col < board_size_; col++) {
-        if (sudoku_board_.GetBoardNumbers()[row][col] == tile_number) {
-          same_number_tiles_to_highlight_.emplace_back(row, col);
-        }
-      }
-    }
-  }
 }
 
 void GameBoard::Draw() {
@@ -80,6 +54,7 @@ void GameBoard::SetLevel(Level level) {
   default:
     sudoku_board_.GenerateValidBoard(kDefaultNumberTotal);
   }
+  InitiateHighlighting();
 }
 
 bool GameBoard::ShowSolution() {
@@ -229,6 +204,37 @@ void GameBoard::DrawNumbers() {
                 std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
                 square_center, kAddedNumberTileColor, kNumberFont);
           }
+        }
+      }
+    }
+  }
+}
+
+void GameBoard::InitiateHighlighting() {
+  tiles_to_highlight_.clear();
+  same_number_tiles_to_highlight_.clear();
+  
+  for (size_t i = 0; i < kBoardSize; i++) {
+    tiles_to_highlight_.emplace_back(vec2(clicked_tile_.x, i));
+    tiles_to_highlight_.emplace_back(vec2(i, clicked_tile_.y));
+  }
+
+  size_t sub_board_size = sqrt(board_size_);
+  size_t sub_board_row = clicked_tile_.x / sub_board_size * sub_board_size;
+  size_t sub_board_col = clicked_tile_.y / sub_board_size * sub_board_size;
+  for (size_t i = 0; i < sub_board_size; i++) {
+    for (size_t j = 0; j < sub_board_size; j++) {
+      tiles_to_highlight_.emplace_back(vec2(i+sub_board_row, j+sub_board_col));
+    }
+  }
+
+  size_t tile_number = sudoku_board_.GetBoardNumbers()[clicked_tile_.x]
+  [clicked_tile_.y];
+  if (tile_number != 0) {
+    for (size_t row = 0; row < board_size_; row++) {
+      for (size_t col = 0; col < board_size_; col++) {
+        if (sudoku_board_.GetBoardNumbers()[row][col] == tile_number) {
+          same_number_tiles_to_highlight_.emplace_back(row, col);
         }
       }
     }
