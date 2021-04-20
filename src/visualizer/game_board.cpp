@@ -55,6 +55,7 @@ void GameBoard::SetLevel(Level level) {
     sudoku_board_.GenerateValidBoard(kDefaultNumberTotal);
   }
   InitiateHighlighting();
+  sudoku_board_.ClearTilesAddedNumber();
 }
 
 bool GameBoard::ShowSolution() {

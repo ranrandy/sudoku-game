@@ -89,8 +89,12 @@ size_t SudokuBoard::GetNumberTotal() const {
   return number_total;
 }
 
-const vector<glm::vec2> & SudokuBoard::GetTilesAddedNumber() const {
+const vector<glm::vec2>& SudokuBoard::GetTilesAddedNumber() const {
   return tiles_added_number_;
+}
+
+void SudokuBoard::ClearTilesAddedNumber() {
+  tiles_added_number_.clear();
 }
 
 void SudokuBoard::SetBoardNumbers(const vector<vector<size_t>>& board) {

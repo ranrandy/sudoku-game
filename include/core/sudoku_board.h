@@ -59,6 +59,8 @@ public:
   
   const vector<glm::vec2>& GetTilesAddedNumber() const;
   
+  void ClearTilesAddedNumber();
+  
   void SetBoardNumbers(const vector<vector<size_t>>& board);
   
 private:
