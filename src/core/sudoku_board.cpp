@@ -4,6 +4,7 @@
 namespace sudokugame {
 
 SudokuBoard::SudokuBoard(size_t board_size) {
+  // Checks if the board size is a square number.
   if (sqrt(board_size) * sqrt(board_size) == board_size && 
       board_size >= kMinBoardSize && board_size <= kMaxBoardSize) {
     board_size_ = board_size;
@@ -15,6 +16,7 @@ SudokuBoard::SudokuBoard(size_t board_size) {
 }
 
 SudokuBoard::SudokuBoard(const vector<vector<size_t>>& board) {
+  // Checks if the board size is a square number.
   if (sqrt(board.size()) * sqrt(board.size()) == board.size() &&
       board.size() >= kMinBoardSize && board.size() <= kMaxBoardSize) {
     board_size_ = board.size();
@@ -34,6 +36,7 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
                                     vector<size_t>(board_size_, 0));
   }
   
+  // Randomly generate some numbers on the board until the board is solvable.
   GenerateNumbers(board_size_ * board_size_ / kGeneratingParameter);
   while (!SudokuSolver(board_).Solve()) {
     board_ = vector<vector<size_t>>(board_size_, 
@@ -41,19 +44,28 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
     GenerateNumbers(board_size_ * board_size_ / kGeneratingParameter);
   }
   
+  // Solve the board.
   SudokuSolver sudoku_solver(board_);
   sudoku_solver.Solve();
+  
+  // Get a solved full board.
   board_ = sudoku_solver.GetSolution();
+  
+  // Removes some numbers from the board to leave only number_total numbers.
   RemoveNumbers(board_size_ * board_size_ - number_total);
 }
 
 void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
+  // Checks if the position is original fixed or player added.
   bool is_added_by_player = false;
   for (const glm::vec2& tile_added_number : tiles_added_number_) {
     if (position == tile_added_number) {
       is_added_by_player = true;
     }
   }
+  
+  // Checks if the number is within range and if the tile is empty or the tile 
+  // was added by the player.
   if ((board_[position.x][position.y] == 0 || is_added_by_player) && 
       number < kMaxBoardSize && number != 0) {
     board_[position.x][position.y] = number;
@@ -131,14 +143,17 @@ void SudokuBoard::RemoveNumbers(size_t number_to_remove) {
 }
 
 bool SudokuBoard::IsValidTile(size_t row, size_t col, size_t number) const {
+  // Checks if the tile is empty.
   if (board_[row][col] != 0) {
     return false;
   }
 
+  // Checks if adding the number conforms to the rule in sub board.
   if (!IsValidSubBoard(row, col, number)) {
     return false;
   }
-    
+
+  // Checks if adding the number conforms to the rule in row and column.
   for (size_t i = 0; i < board_size_; i++) {
     if (board_[i][col] == number || board_[row][i] == number) {
       return false;
