@@ -48,9 +48,16 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
 }
 
 void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
-  if (board_[position.x][position.y] == 0 && number < kMaxBoardSize &&
-      number != 0) {
+  bool is_added_by_player = false;
+  for (const glm::vec2& tile_added_number : tiles_added_number_) {
+    if (position == tile_added_number) {
+      is_added_by_player = true;
+    }
+  }
+  if ((board_[position.x][position.y] == 0 || is_added_by_player) && 
+      number < kMaxBoardSize && number != 0) {
     board_[position.x][position.y] = number;
+    tiles_added_number_.push_back(position);
   }
 }
 
@@ -80,6 +87,10 @@ size_t SudokuBoard::GetNumberTotal() const {
     }
   }
   return number_total;
+}
+
+const vector<glm::vec2> & SudokuBoard::GetTilesAddedNumber() const {
+  return tiles_added_number_;
 }
 
 void SudokuBoard::SetBoardNumbers(const vector<vector<size_t>>& board) {

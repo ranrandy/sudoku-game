@@ -31,9 +31,9 @@ public:
   
   void SetLevel(Level level);
   bool ShowSolution();
-  void HandleAddNumber(const ci::app::MouseEvent& event, size_t number);
+  void AddNumber(size_t number);
   void HandleHighlighting(const ci::app::MouseEvent& event);
-
+  
 private:
   const ci::Color kBoardColor = ci::Color8u(219, 229, 214);
   const ci::Color kSquareEdgeColor = "black";
@@ -42,7 +42,7 @@ private:
   const ci::Color kClickedEmptyTileColor = ci::Color8u(167, 211, 151);
   const ci::Color kSameNumberTileColor = ci::Color8u(132, 172, 68);
   const ci::Color kSameNumberTileNumberColor = "white";
-
+  const ci::Color kAddedNumberTileColor = "yellow";
 
   const size_t kDefaultNumberTotal = 30;
   const size_t kEasyLevelMaxTotal = 44;
@@ -69,9 +69,10 @@ private:
   vec2 board_top_left_;
   vec2 board_bottom_right_;
   vec2 clicked_tile_;
-  std::vector<vec2> tiles_to_highlight;
-  std::vector<vec2> same_number_tiles_to_highlight;
-
+  
+  vector<vec2> tiles_to_highlight_;
+  vector<vec2> same_number_tiles_to_highlight_;
+  
   SudokuBoard sudoku_board_;
 };
 

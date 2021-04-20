@@ -80,11 +80,11 @@ private:
   void DrawKeyBoard();
   void ClickKeyBoard(const ci::app::MouseEvent& event);
   
-  size_t clicked_key_;
-  
   GameBoard game_board_ = GameBoard(kBoardTopLeft, kBoardRightBottom,
                                     kBoardSize);
+  
   std::vector<vec2> level_centers_;
+  
   std::string solution_status_ = kSolutionString;
 };
 

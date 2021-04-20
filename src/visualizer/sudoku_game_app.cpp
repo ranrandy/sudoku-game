@@ -20,9 +20,8 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
   ChangeLevels(event);
   ShowSolution(event);
-  ClickKeyBoard(event);
   game_board_.HandleHighlighting(event);
-  game_board_.HandleAddNumber(event, clicked_key_);
+  ClickKeyBoard(event);
 }
 
 void SudokuGameApp::draw() {
@@ -181,9 +180,9 @@ void SudokuGameApp::ClickKeyBoard(const ci::app::MouseEvent& event) {
       rect_length / 2 - kKeyBoardEdgeOffset && 
       abs(int(clicked_key_center.y) - event.getY()) <
           rect_width / 2 - kKeyBoardEdgeOffset) {
-    clicked_key_ = kKeyBoardNumbers[clicked_key_position.y * 
-                                        sqrt(kKeyBoardNumbers.size()) + 
-                                    clicked_key_position.x];
+    game_board_.AddNumber(kKeyBoardNumbers[clicked_key_position.y * 
+                                               sqrt(kKeyBoardNumbers.size()) + 
+                                           clicked_key_position.x]);
   }
 }
 

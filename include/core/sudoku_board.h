@@ -57,6 +57,8 @@ public:
    */
   size_t GetBoardSize() const;
   
+  const vector<glm::vec2>& GetTilesAddedNumber() const;
+  
   void SetBoardNumbers(const vector<vector<size_t>>& board);
   
 private:
@@ -80,6 +82,8 @@ private:
   bool IsValidSubBoard(size_t row, size_t col, size_t number) const;
   
   size_t board_size_;
+
+  vector<glm::vec2> tiles_added_number_;
 
   vector<vector<size_t>> board_;
 };

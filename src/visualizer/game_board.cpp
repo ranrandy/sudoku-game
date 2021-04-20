@@ -15,8 +15,8 @@ GameBoard::GameBoard(const vec2& board_top_left,
   SetLevel(level);
 
   for (size_t i = 0; i < kBoardSize; i++) {
-    tiles_to_highlight.emplace_back(vec2(clicked_tile_.x, i));
-    tiles_to_highlight.emplace_back(vec2(i, clicked_tile_.y));
+    tiles_to_highlight_.emplace_back(vec2(clicked_tile_.x, i));
+    tiles_to_highlight_.emplace_back(vec2(i, clicked_tile_.y));
   }
 
   size_t sub_board_size = sqrt(board_size_);
@@ -24,7 +24,7 @@ GameBoard::GameBoard(const vec2& board_top_left,
   size_t sub_board_col = clicked_tile_.y / sub_board_size * sub_board_size;
   for (size_t i = 0; i < sub_board_size; i++) {
     for (size_t j = 0; j < sub_board_size; j++) {
-      tiles_to_highlight.emplace_back(vec2(i+sub_board_row, j+sub_board_col));
+      tiles_to_highlight_.emplace_back(vec2(i+sub_board_row, j+sub_board_col));
     }
   }
 
@@ -34,7 +34,7 @@ GameBoard::GameBoard(const vec2& board_top_left,
     for (size_t row = 0; row < board_size_; row++) {
       for (size_t col = 0; col < board_size_; col++) {
         if (sudoku_board_.GetBoardNumbers()[row][col] == tile_number) {
-          same_number_tiles_to_highlight.emplace_back(row, col);
+          same_number_tiles_to_highlight_.emplace_back(row, col);
         }
       }
     }
@@ -92,27 +92,11 @@ bool GameBoard::ShowSolution() {
   }
 }
 
-void GameBoard::HandleAddNumber(const ci::app::MouseEvent& event, 
-                                size_t number) {
-  vec2 game_board_center =
-      vec2((board_top_left_.x + board_bottom_right_.x) / 2,
-           (board_top_left_.y + board_bottom_right_.y) / 2);
-  if (abs(game_board_center.x - float(event.getX())) <
-      (board_bottom_right_.x - board_top_left_.x) / 2 &&
-      abs(game_board_center.y - float(event.getY())) <
-      (board_bottom_right_.y - board_top_left_.y) / 2) {
-    size_t square_length = (board_bottom_right_.x - board_top_left_.x) /
-                           board_size_;
-    vec2 tile_to_add_number = 
-        vec2((event.getX() - int(board_top_left_.x)) / square_length,
-             (event.getY() - int(board_top_left_.y)) / square_length);
-    sudoku_board_.AddNumber(tile_to_add_number, number);
-  }
+void GameBoard::AddNumber(size_t number) {
+  sudoku_board_.AddNumber(clicked_tile_, number);
 }
 
 void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
-  tiles_to_highlight.clear();
-  same_number_tiles_to_highlight.clear();
   vec2 game_board_center =
       vec2((board_top_left_.x + board_bottom_right_.x) / 2,
            (board_top_left_.y + board_bottom_right_.y) / 2);
@@ -120,6 +104,9 @@ void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
       (board_bottom_right_.x - board_top_left_.x) / 2 &&
       abs(game_board_center.y - float(event.getY())) <
       (board_bottom_right_.y - board_top_left_.y) / 2) {
+    tiles_to_highlight_.clear();
+    same_number_tiles_to_highlight_.clear();
+    
     size_t square_length = (board_bottom_right_.x - board_top_left_.x) /
                            board_size_;
     size_t clicked_tile_x = (event.getX() - int(board_top_left_.x)) / 
@@ -133,15 +120,15 @@ void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
       for (size_t row = 0; row < board_size_; row++) {
         for (size_t col = 0; col < board_size_; col++) {
           if (sudoku_board_.GetBoardNumbers()[row][col] == tile_number) {
-            same_number_tiles_to_highlight.emplace_back(row, col);
+            same_number_tiles_to_highlight_.emplace_back(row, col);
           }
         }
       }
     }
     
     for (size_t i = 0; i < kBoardSize; i++) {
-      tiles_to_highlight.emplace_back(vec2(clicked_tile_x, i));
-      tiles_to_highlight.emplace_back(vec2(i, clicked_tile_y));
+      tiles_to_highlight_.emplace_back(vec2(clicked_tile_x, i));
+      tiles_to_highlight_.emplace_back(vec2(i, clicked_tile_y));
     }
     
     size_t sub_board_size = sqrt(board_size_);
@@ -149,7 +136,8 @@ void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
     size_t sub_board_col = clicked_tile_y / sub_board_size * sub_board_size;
     for (size_t i = 0; i < sub_board_size; i++) {
       for (size_t j = 0; j < sub_board_size; j++) {
-        tiles_to_highlight.emplace_back(vec2(i+sub_board_row, j+sub_board_col));
+        tiles_to_highlight_.emplace_back(vec2(i+sub_board_row, 
+                                              j+sub_board_col));
       }
     }
   }
@@ -180,7 +168,7 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
         ci::gl::drawSolidRect(square_bounding_box);
       }
       
-      for (const vec2& tile_to_highlight : tiles_to_highlight) {
+      for (const vec2& tile_to_highlight : tiles_to_highlight_) {
         if (vec2(row, col) == tile_to_highlight && 
             vec2(row, col) != clicked_tile_ && is_tile) {
           ci::gl::color(kRelatedTileColor);
@@ -189,7 +177,7 @@ void GameBoard::DrawSquares(size_t square_length, size_t edge_line_width,
       }
       
       for (const vec2& same_number_tile_to_highlight : 
-           same_number_tiles_to_highlight) {
+           same_number_tiles_to_highlight_) {
         if (vec2(row, col) == same_number_tile_to_highlight &&
             vec2(row, col) != clicked_tile_ && is_tile) {
           ci::gl::color(kSameNumberTileColor);
@@ -217,11 +205,10 @@ void GameBoard::DrawNumbers() {
             std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
             square_center, kSquareEdgeColor, kNumberFont);
         
-        for (const vec2& same_number_tile_to_highlight :
-            same_number_tiles_to_highlight) {
+        for (const vec2& same_number_tile_to_highlight : 
+             same_number_tiles_to_highlight_) {
           if (vec2(row, col) == same_number_tile_to_highlight &&
               vec2(row, col) != clicked_tile_) {
-            ci::gl::color(kSameNumberTileColor);
             ci::gl::drawStringCentered(
                 std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
                 square_center, kSameNumberTileNumberColor, kNumberFont);
@@ -229,10 +216,18 @@ void GameBoard::DrawNumbers() {
 
           if (vec2(row, col) == clicked_tile_ &&
               sudoku_board_.GetBoardNumbers()[row][col] != 0) {
-            ci::gl::color(kClickedOriginalTileColor);
             ci::gl::drawStringCentered(
                 std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
                 square_center, kSameNumberTileNumberColor, kNumberFont);
+          }
+        }
+
+        for (const vec2& tile_added_number :
+            sudoku_board_.GetTilesAddedNumber()) {
+          if (vec2(row, col) == tile_added_number) {
+            ci::gl::drawStringCentered(
+                std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),
+                square_center, kAddedNumberTileColor, kNumberFont);
           }
         }
       }
