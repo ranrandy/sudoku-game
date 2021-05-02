@@ -59,7 +59,9 @@ list(APPEND SOURCE_FILES    src/core/sudoku_board.cpp
 list(APPEND TEST_FILES tests/test_core/test_sudoku_board.cpp
         tests/test_core/test_sudoku_solver.cpp
         tests/test_visualizer/test_components/test_game_board.cpp
-        tests/test_visualizer/test_sudoku_game_app.cpp)
+        tests/test_visualizer/test_sudoku_game_app.cpp
+        tests/test_visualizer/test_components/test_level_box.cpp
+        tests/test_visualizer/test_components/test_keyboard.cpp)
 
 ci_make_app(
         APP_NAME        sudoku-game
