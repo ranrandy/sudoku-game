@@ -47,7 +47,6 @@ TEST_CASE("Generate numbers on the board (size = 9)") {
   }
 }
 
-
 TEST_CASE("Generate numbers on the board (size = 4)") {
   SudokuBoard sudoku_board(4);
 
@@ -91,33 +90,37 @@ TEST_CASE("Add a number to the board") {
       {0, 0, 0, 0, 8, 0, 0, 7, 9}};
   SudokuBoard sudoku_board(board);
 
-  SECTION("Add to a position which already has a number") {
+  SECTION("Add to a position which already has a number "
+          "and that number was originally generated") {
     sudoku_board.AddNumber(vec2(0, 1), 1);
     REQUIRE(sudoku_board.GetNumberTotal() == 30);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][1] == 3);
+    REQUIRE(sudoku_board.GetAddedTiles().empty());
   }
 
-  SECTION("Add to a position that violates the rule on row") {
-    sudoku_board.AddNumber(vec2(0, 2), 3);
-    REQUIRE(sudoku_board.GetNumberTotal() == 30);
-    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
-  }
-
-  SECTION("Add to a position that violates the rule on column") {
-    sudoku_board.AddNumber(vec2(0, 2), 8);
-    REQUIRE(sudoku_board.GetNumberTotal() == 30);
-    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
-  }
-
-  SECTION("Add to a position that violates the rule in sub board") {
-    sudoku_board.AddNumber(vec2(0, 2), 9);
-    REQUIRE(sudoku_board.GetNumberTotal() == 30);
-    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 0);
+  SECTION("Add to a position that already has a number "
+          "but that number was added by the player") {
+    sudoku_board.AddNumber(vec2(0, 2), 1);
+    sudoku_board.AddNumber(vec2(0, 2), 2);
+    REQUIRE(sudoku_board.GetNumberTotal() == 31);
+    REQUIRE(sudoku_board.GetBoardNumbers()[0][2] == 2);
+    REQUIRE(sudoku_board.GetAddedTiles()[0] == vec2(0, 2));
+    REQUIRE(sudoku_board.GetAddedTiles().size() == 1);
   }
   
-  SECTION("Add to a position that is valid") {
+  SECTION("Add to a position that originally was not holding any number") {
     sudoku_board.AddNumber(vec2(0, 7), 1);
     REQUIRE(sudoku_board.GetNumberTotal() == 31);
     REQUIRE(sudoku_board.GetBoardNumbers()[0][7] == 1);
+    REQUIRE(sudoku_board.GetAddedTiles()[0] == vec2(0, 7));
+    REQUIRE(sudoku_board.GetAddedTiles().size() == 1);
+  }
+  
+  SECTION("Clear all the tiles modified by the player") {
+    sudoku_board.AddNumber(vec2(0, 2), 2);
+    sudoku_board.AddNumber(vec2(0, 7), 1);
+    sudoku_board.ClearAddedTiles();
+    REQUIRE(sudoku_board.GetAddedTiles().empty());
   }
 }
+

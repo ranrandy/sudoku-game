@@ -4,8 +4,9 @@
 namespace sudokugame {
 
 SudokuBoard::SudokuBoard(size_t board_size) {
-  // Checks if the board size is a square number.
-  if (sqrt(board_size) * sqrt(board_size) == board_size && 
+  // Checks if the board size is a square number and 
+  // if the board size is within range.
+  if (sqrt(board_size) * sqrt(board_size) == float(board_size) && 
       board_size >= kMinBoardSize && board_size <= kMaxBoardSize) {
     board_size_ = board_size;
     board_ = vector<vector<size_t>>(board_size_, 
@@ -17,8 +18,9 @@ SudokuBoard::SudokuBoard(size_t board_size) {
 
 SudokuBoard::SudokuBoard(const vector<vector<size_t>>& board) {
   // Checks if the board size is a square number.
-  if (sqrt(board.size()) * sqrt(board.size()) == board.size() &&
+  if (sqrt(board.size()) * sqrt(board.size()) == float(board.size()) &&
       board.size() >= kMinBoardSize && board.size() <= kMaxBoardSize) {
+    // This works only if the board is a square board.
     board_size_ = board.size();
     board_ = board;
   } else {
@@ -28,7 +30,7 @@ SudokuBoard::SudokuBoard(const vector<vector<size_t>>& board) {
 
 void SudokuBoard::GenerateValidBoard(size_t number_total) {
   if (number_total > board_size_ * board_size_) {
-    throw std::invalid_argument("There are too many numbers");
+    throw std::invalid_argument("There are too many numbers to be added");
   }
   
   if (GetNumberTotal() > 0) {
@@ -69,7 +71,9 @@ void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
   if ((board_[position.x][position.y] == 0 || is_added_by_player) && 
       number <= kMaxBoardSize && number != 0) {
     board_[position.x][position.y] = number;
-    tiles_added_number_.push_back(position);
+    if (!is_added_by_player) {
+      tiles_added_number_.push_back(position);
+    }
   }
 }
 
@@ -101,11 +105,14 @@ size_t SudokuBoard::GetNumberTotal() const {
   return number_total;
 }
 
-const vector<glm::vec2>& SudokuBoard::GetTilesAddedNumber() const {
+const vector<glm::vec2>& SudokuBoard::GetAddedTiles() const {
   return tiles_added_number_;
 }
 
-void SudokuBoard::ClearTilesAddedNumber() {
+void SudokuBoard::ClearAddedTiles() {
+  for (const glm::vec2& position : tiles_added_number_) {
+    board_[position.x][position.y] = 0;
+  }
   tiles_added_number_.clear();
 }
 
@@ -118,14 +125,14 @@ void SudokuBoard::GenerateNumbers(size_t number_total) {
     std::random_device rd;
     size_t random_row = rd() % board_size_;
     size_t random_col = rd() % board_size_;
-    size_t random_element = rd() % board_size_ + 1;
+    size_t random_number = rd() % board_size_ + 1;
 
-    while (!AddNumber(random_row, random_col, random_element)) {
+    while (!AddNumber(random_row, random_col, random_number)) {
       random_row = rd() % board_size_;
       random_col = rd() % board_size_;
-      random_element = rd() % board_size_ + 1;
+      random_number = rd() % board_size_ + 1;
     }
-    board_[random_row][random_col] = random_element;
+    board_[random_row][random_col] = random_number;
   }
 }
 

@@ -55,7 +55,7 @@ void GameBoard::SetLevel(Level level) {
     sudoku_board_.GenerateValidBoard(kDefaultNumberTotal);
   }
   InitiateHighlighting();
-  sudoku_board_.ClearTilesAddedNumber();
+  sudoku_board_.ClearAddedTiles();
 }
 
 bool GameBoard::ShowSolution() {
@@ -215,7 +215,7 @@ void GameBoard::DrawNumbers() {
 
         // Draws the player added numbers with some different color.
         for (const vec2& tile_added_number :
-            sudoku_board_.GetTilesAddedNumber()) {
+            sudoku_board_.GetAddedTiles()) {
           if (vec2(row, col) == tile_added_number) {
             ci::gl::drawStringCentered(
                 std::to_string(sudoku_board_.GetBoardNumbers()[row][col]),

@@ -10,24 +10,24 @@ namespace sudokugame {
 using std::vector;
 
 /**
- * A Sudoku board containing the data of one sudoku game.
+ * A Sudoku board containing the data (numbers) of one sudoku game.
  */
 class SudokuBoard {
-public:
+ public:
   /**
-   * Constructs a sudoku board given the board size.
+   * Constructs an empty sudoku board given the board size.
    * @param board_size the size of the board
    */
-  SudokuBoard(size_t board_size);
+  explicit SudokuBoard(size_t board_size);
   
   /**
-   * Constructs a sudoku board given the
-   * @param board a 2d array consisting numbers in it
+   * Constructs a sudoku board given a 2D vector board with numbers.
+   * @param board a 2D array consisting numbers in it
    */
-  SudokuBoard(const vector<vector<size_t>>& board);
+  explicit SudokuBoard(const vector<vector<size_t>>& board);
   
   /**
-   * Generate a valid board of numbers given the total number.
+   * Generates a valid board of numbers given the number total on the board.
    * @param number_total the total number of numbers on the board
    */
   void GenerateValidBoard(size_t number_total);
@@ -59,14 +59,14 @@ public:
   
   /**
    * Gets the tiles whose number is added by the player.
-   * @return a vector of tiles whose number is added by the player
+   * @return a vector of tile positions at where the number is added by player
    */
-  const vector<glm::vec2>& GetTilesAddedNumber() const;
+  const vector<glm::vec2>& GetAddedTiles() const;
   
   /**
    * Clears the vector storing tiles whose number is added by the player
    */
-  void ClearTilesAddedNumber();
+  void ClearAddedTiles();
   
   /**
    * Sets the numbers on a board
@@ -74,7 +74,7 @@ public:
    */
   void SetBoardNumbers(const vector<vector<size_t>>& board);
   
-private:
+ private:
   const size_t kMaxBoardSize = 9;
   const size_t kMinBoardSize = 4;
   const size_t kGeneratingParameter = 3;
@@ -101,7 +101,7 @@ private:
   void RemoveNumbers(size_t number_to_remove);
   
   /**
-   * Checks if adding number to a certain tile will conform to the rule.
+   * Checks if adding number to a certain tile conforms to the rule.
    * @param row row index
    * @param col column index
    * @param number the number to be added
@@ -118,10 +118,13 @@ private:
    */
   bool IsValidSubBoard(size_t row, size_t col, size_t number) const;
   
+  // The size of the sudoku game board
   size_t board_size_;
 
+  // Stores the tiles whose number was added by the player.
   vector<glm::vec2> tiles_added_number_;
 
+  // Stores a 2D vector containing the numbers on a board.
   vector<vector<size_t>> board_;
 };
 
