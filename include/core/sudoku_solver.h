@@ -7,7 +7,7 @@ namespace sudokugame {
 using std::vector;
 
 /**
- * Provide a solution to a sudoku game.
+ * Provides a solution to a sudoku game.
  */
 class SudokuSolver {
 public:
@@ -32,9 +32,31 @@ public:
   const gameboard& GetSolution() const; 
 
 private:
+  /**
+   * Fill in the whole sudoku board.
+   * @return if the board will be successfully filled in
+   */
   bool FillInNumbers();
+  
+  /**
+   * Checks if the board is full.
+   * @return if the board is full
+   */
   bool IsFull() const ;
+  
+  /**
+   * Checks if the board is valid.
+   * @return if the board is valid
+   */
   bool IsValid() const ;
+  
+  /**
+   * Checks if one tile is valid, namely if one tile conforms to the rule.
+   * @param row row index
+   * @param col column index
+   * @param number the number in the tile
+   * @return if this tile is valid
+   */
   bool IsValidTile(size_t row, size_t col, size_t number) const;
   
   // A 2D vector storing the sudoku game board data 

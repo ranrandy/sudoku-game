@@ -57,8 +57,21 @@ public:
    */
   size_t GetBoardSize() const;
   
+  /**
+   * Gets the tiles whose number is added by the player.
+   * @return a vector of tiles whose number is added by the player
+   */
   const vector<glm::vec2>& GetTilesAddedNumber() const;
   
+  /**
+   * Clears the vector storing tiles whose number is added by the player
+   */
+  void ClearTilesAddedNumber();
+  
+  /**
+   * Sets the numbers on a board
+   * @param board the board to copy from
+   */
   void SetBoardNumbers(const vector<vector<size_t>>& board);
   
 private:
@@ -75,10 +88,34 @@ private:
    */
   bool AddNumber(size_t row, size_t col, size_t number);
   
+  /**
+   * Randomly generate some numbers on the board.
+   * @param number_total the total number of numbers to be generated
+   */
   void GenerateNumbers(size_t number_total);
+  
+  /**
+   * Removes numbers from the board.
+   * @param number_to_remove the total number of numbers to be removed
+   */
   void RemoveNumbers(size_t number_to_remove);
   
+  /**
+   * Checks if adding number to a certain tile will conform to the rule.
+   * @param row row index
+   * @param col column index
+   * @param number the number to be added
+   * @return if adding the number conforms to the rule
+   */
   bool IsValidTile(size_t row, size_t col, size_t number) const;
+  
+  /**
+   * Checks if adding a number to a sub board will conform to the rule.
+   * @param row row index
+   * @param col column index
+   * @param number the number to be added
+   * @return if adding the number conforms to the rule in a sub board
+   */
   bool IsValidSubBoard(size_t row, size_t col, size_t number) const;
   
   size_t board_size_;
