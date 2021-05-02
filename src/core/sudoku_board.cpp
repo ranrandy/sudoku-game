@@ -67,7 +67,7 @@ void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
   // Checks if the number is within range and if the tile is empty or the tile 
   // was added by the player.
   if ((board_[position.x][position.y] == 0 || is_added_by_player) && 
-      number < kMaxBoardSize && number != 0) {
+      number <= kMaxBoardSize && number != 0) {
     board_[position.x][position.y] = number;
     tiles_added_number_.push_back(position);
   }

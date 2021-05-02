@@ -40,12 +40,12 @@ void LevelBox::DrawLevelBox() {
                              kLevelBoxEdgeColor, kLevelFont);
 }
 
-void LevelBox::ChangeLevels(const ci::app::MouseEvent& event, 
+void LevelBox::ChangeLevels(const vec2& event_position, 
                             GameBoard& game_board) {
   for (size_t level = 0; level < kTotalLevels; level++) {
-    if (abs(level_centers_[level].x - float(event.getX())) <
+    if (abs(level_centers_[level].x - float(event_position.x)) <
         (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 &&
-        abs(level_centers_[level].y - float(event.getY())) <
+        abs(level_centers_[level].y - float(event_position.y)) <
         (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
       switch (level) {
       case 0:

@@ -24,7 +24,7 @@ public:
   LevelBox();
 
   void DrawLevelBox();
-  void ChangeLevels(const ci::app::MouseEvent& event, GameBoard& game_board);
+  void ChangeLevels(const vec2& event_position, GameBoard& game_board);
 
 private:
   const size_t kTotalLevels = 3;

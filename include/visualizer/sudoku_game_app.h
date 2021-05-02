@@ -90,8 +90,8 @@ private:
   void DrawKeyBoard();
   void ClickKeyBoard(const ci::app::MouseEvent& event);
   
-  GameBoard game_board_ = GameBoard(kBoardTopLeft, kBoardRightBottom,
-                                    kBoardSize);
+  GameBoard game_board_;
+  
   LevelBox level_box_;
   
   std::string solution_status_ = kSolutionString;

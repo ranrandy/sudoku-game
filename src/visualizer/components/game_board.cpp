@@ -1,4 +1,4 @@
-#include "visualizer/game_board.h"
+#include "visualizer/components/game_board.h"
 
 namespace sudokugame {
 

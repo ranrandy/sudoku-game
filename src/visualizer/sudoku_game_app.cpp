@@ -7,7 +7,8 @@ namespace visualizer {
 using ci::app::KeyEvent;
 using sudokugame::visualizer::GameBoard;
 
-SudokuGameApp::SudokuGameApp() { 
+SudokuGameApp::SudokuGameApp()
+    : game_board_(GameBoard(kBoardTopLeft, kBoardRightBottom, kBoardSize)) { 
   setWindowSize(kWindowLength, kWindowWidth);
 }
 
@@ -18,8 +19,7 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 }
 
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
-  // ChangeLevels(event);
-  level_box_.ChangeLevels(event, game_board_);
+  level_box_.ChangeLevels(event.getPos(), game_board_);
   ShowSolution(event);
   game_board_.HandleHighlighting(event);
   ClickKeyBoard(event);
@@ -30,7 +30,6 @@ void SudokuGameApp::draw() {
   
   game_board_.Draw();
   
-  // DrawLevelBox();
   level_box_.DrawLevelBox();
   
   DrawSolutionBox(solution_status_);
