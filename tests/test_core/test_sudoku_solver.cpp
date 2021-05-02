@@ -30,8 +30,6 @@ TEST_CASE("Sudoku solver can solve a board") {
       {0, 6, 0, 0, 0, 0, 2, 8, 0},
       {0, 0, 0, 4, 1, 9, 0, 0, 5},
       {0, 0, 0, 0, 8, 0, 0, 7, 9}};
-  
-  
 
   SudokuSolver normal_board_solution(board);
   SudokuSolver empty_board_solution(empty_board);
@@ -50,36 +48,6 @@ TEST_CASE("Sudoku solver can solve a board") {
       empty_board_solution.GetSolution();
   SudokuSolver::gameboard solved_unsolvable_board =
       unsolvable_board_solution.GetSolution();
-  
-  for (const std::vector<size_t>& row : solved_normal_board) {
-    for (size_t col : row) {
-      std::cout << col << " ";
-    }
-    std::cout << std::endl;
-  }
-
-  std::cout << std::endl;
-  std::cout << std::endl;
-
-  for (const std::vector<size_t>& row : solved_empty_board) {
-    for (size_t col : row) {
-      std::cout << col << " ";
-    }
-    std::cout << std::endl;
-  }
-  
-  std::cout << std::endl;
-  std::cout << std::endl;
-
-  for (const std::vector<size_t>& row : solved_unsolvable_board) {
-    for (size_t col : row) {
-      std::cout << col << " ";
-    }
-    std::cout << std::endl;
-  }
-  
-  
-  
 
   // Normal board is full
   for (const vector<size_t>& row : solved_normal_board) {
