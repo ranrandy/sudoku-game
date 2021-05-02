@@ -6,7 +6,7 @@ SudokuSolver::SudokuSolver(const gameboard &board) {
   tile_to_fill_ = 0;
   sudoku_board_ = board;
   
-  // Stores the tiles to be filled in
+  // Stores the empty tiles that need to be filled in
   for (size_t row = 0; row < board.size(); row++) {
     for (size_t col = 0; col < board.size(); col++) {
       if (board[row][col] == 0) {
@@ -37,23 +37,21 @@ bool SudokuSolver::FillInNumbers() {
   size_t row = starting_point.first;
   size_t col = starting_point.second;
 
-  // Checks from 1 to the largest number on the board. 
+  // Checks from 1 to the largest number for the game. 
   // Add this number to the tile, 
   // and recursively check if the ultimate board will be valid.
   for (size_t possible_number = 1; possible_number <= sudoku_board_.size(); 
        possible_number++) {
-    // If the tile is not empty (this if clause may be redundant).
-    if (sudoku_board_[row][col] != 0) {
-      break;
-    }
-
     // Add the number to the tile and check.
     if (IsValidTile(row, col, possible_number)) {
       sudoku_board_[row][col] = possible_number;
       tile_to_fill_++;
+      
+      // If, recursively, the final board is valid, then we get the solution.
       if (FillInNumbers()) {
         return true;
       } else {
+        // Otherwise, we try to fill in this tile with other numbers.
         sudoku_board_[row][col] = 0;
         tile_to_fill_--;
       }

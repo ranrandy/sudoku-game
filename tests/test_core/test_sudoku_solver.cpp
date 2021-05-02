@@ -70,6 +70,7 @@ TEST_CASE("Sudoku solver can solve a board") {
     }
   }
 
+  // Solved normal board and empty board are conforming to the rule.
   for (size_t row = 0; row < 9; row++) {
     for (size_t col = 0; col < 9; col++) {
       for (size_t i = 0; i < 9; i++) {
