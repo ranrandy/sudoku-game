@@ -46,6 +46,13 @@ class SudokuBoard {
   void RemoveNumber(const glm::vec2& position);
 
   /**
+   * Removes numbers that are added by the player from the board
+   * (Used in showing the solution).
+   * @param added_tiles player modified tiles
+   */
+  void RemoveNumbers(const std::vector<glm::vec2>& added_tiles);
+
+  /**
    * Gets a 2D array containing the numbers on the board.
    * @return a 2D array containing the numbers on the board
    */

@@ -85,6 +85,12 @@ void SudokuBoard::RemoveNumber(const glm::vec2& position) {
   }
 }
 
+void SudokuBoard::RemoveNumbers(const std::vector<glm::vec2>& added_tiles) {
+  for (const glm::vec2& added_tile_pos : added_tiles) {
+    board_[added_tile_pos.x][added_tile_pos.y] = 0;
+  }
+}
+
 const vector<vector<size_t>>& SudokuBoard::GetBoardNumbers() const {
   return board_;
 }
