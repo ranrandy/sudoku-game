@@ -5,8 +5,7 @@ namespace sudokugame {
 namespace visualizer {
 
 SudokuGameApp::SudokuGameApp()
-    : game_board_(kBoardTopLeft, kBoardRightBottom, kBoardSize), 
-      keyboard_(), level_box_(), timer_box_(true), solution_box_() { 
+    : game_board_(), keyboard_(), level_box_(), timer_box_(), solution_box_() { 
   setWindowSize(kWindowLength, kWindowWidth);
 }
 

@@ -31,13 +31,8 @@ class GameBoard {
   
   /**
    * Constructs a board on the screen
-   * @param board_top_left the top left position of this board
-   * @param board_right_bottom the bottom right position of this board
-   * @param board_size the size (length) of the board
-   * @param level the level of the game (in default: Medium)
    */
-  GameBoard(const vec2& board_top_left, const vec2& board_right_bottom, 
-            size_t board_size, Level level = Level::kMedium);
+  GameBoard();
 
   /**
    * Draw the game board.
@@ -113,6 +108,10 @@ private:
   // The color of numbers who are added by the player
   // but not originally generated
   const ci::Color kAddedNumberTileColor = "blue";
+  
+  // Game board position
+  const vec2 kBoardTopLeft = vec2(80, 80);
+  const vec2 kBoardBottomRight = vec2(710, 710);
 
   // Different total number range in different game levels
   const size_t kDefaultNumberTotal = 30;
@@ -122,7 +121,8 @@ private:
   const size_t kMediumLevelMinTotal = 33;
   const size_t kHardLevelMaxTotal = 32;
   const size_t kHardLevelMinTotal = 22;
-  
+
+  // Size of a sudoku game board
   const size_t kBoardSize = 9;
   
   const float kSubBoardMarginWidth = 3.0;
@@ -149,16 +149,7 @@ private:
    * Draws number strings on the screen.
    */
   void DrawNumbers();
-  
-  // Size of a sudoku game board
-  size_t board_size_;
-  
-  // Top left corner position of the board
-  vec2 board_top_left_;
-  
-  // Bottom right corner position of the board
-  vec2 board_bottom_right_;
-  
+
   // The position of the clicked tile
   vec2 clicked_tile_;
   

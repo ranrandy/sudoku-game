@@ -4,30 +4,23 @@ namespace sudokugame {
 
 namespace visualizer {
 
-GameBoard::GameBoard(const vec2& board_top_left, 
-                     const vec2& board_bottom_right, 
-                     size_t board_size,
-                     Level level) 
-    : board_size_(board_size), 
-      board_top_left_(board_top_left),
-      board_bottom_right_(board_bottom_right), 
-      sudoku_board_(SudokuBoard(board_size)) {
-  GenerateValidBoard(level);
+GameBoard::GameBoard() : sudoku_board_(SudokuBoard(kBoardSize)) {
+  GenerateValidBoard(Level::kMedium);
 }
 
 void GameBoard::Draw() {
   // Draw board background
-  ci::Rectf board_bounding_box(board_top_left_, board_bottom_right_);
+  ci::Rectf board_bounding_box(kBoardTopLeft, kBoardBottomRight);
   ci::gl::color(kBoardColor);
   ci::gl::drawSolidRect(board_bounding_box);
 
   // Draw Tiles
-  DrawSquares((board_bottom_right_.x - board_top_left_.x) / double(board_size_),
-              kTileLineWidth, board_size_ * board_size_);
+  DrawSquares((kBoardBottomRight.x - kBoardTopLeft.x) / double(kBoardSize),
+              kTileLineWidth, kBoardSize * kBoardSize);
 
   // Draw sub boards
-  DrawSquares((board_bottom_right_.x - board_top_left_.x) / sqrt(board_size_),
-              kSubBoardMarginWidth, board_size_, false);
+  DrawSquares((kBoardBottomRight.x - kBoardTopLeft.x) / sqrt(kBoardSize),
+              kSubBoardMarginWidth, kBoardSize, false);
 
   // Draw original numbers
   DrawNumbers();
@@ -83,17 +76,17 @@ void GameBoard::RemoveNumber(bool is_hit) {
 
 void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
   vec2 game_board_center =
-      vec2((board_top_left_.x + board_bottom_right_.x) / 2,
-           (board_top_left_.y + board_bottom_right_.y) / 2);
+      vec2((kBoardTopLeft.x + kBoardBottomRight.x) / 2,
+           (kBoardTopLeft.y + kBoardBottomRight.y) / 2);
   if (abs(game_board_center.x - float(event.getX())) <
-      (board_bottom_right_.x - board_top_left_.x) / 2 &&
+      (kBoardBottomRight.x - kBoardTopLeft.x) / 2 &&
       abs(game_board_center.y - float(event.getY())) <
-      (board_bottom_right_.y - board_top_left_.y) / 2) {
-    size_t square_length = size_t(board_bottom_right_.x - board_top_left_.x) /
-                           board_size_;
-    size_t clicked_tile_x = (event.getX() - int(board_top_left_.x)) / 
+      (kBoardBottomRight.y - kBoardTopLeft.y) / 2) {
+    size_t square_length = size_t(kBoardBottomRight.x - kBoardTopLeft.x) /
+                           kBoardSize;
+    size_t clicked_tile_x = (event.getX() - int(kBoardTopLeft.x)) / 
                             square_length;
-    size_t clicked_tile_y = (event.getY() - int(board_top_left_.y)) / 
+    size_t clicked_tile_y = (event.getY() - int(kBoardTopLeft.y)) / 
                             square_length;
     clicked_tile_ = vec2(clicked_tile_x, clicked_tile_y);
     
@@ -135,10 +128,10 @@ void GameBoard::DrawSquares(double square_length, float edge_line_width,
                             size_t number, bool is_tile) {
   for (size_t row = 0; row < size_t((sqrt(number))); ++row) {
     for (size_t col = 0; col < size_t(sqrt(number)); ++col) {
-      vec2 square_top_left = board_top_left_ + 
+      vec2 square_top_left = kBoardTopLeft + 
                              vec2(double(row) * square_length,
                                   double(col) * square_length);
-      vec2 square_bottom_right = board_top_left_ + 
+      vec2 square_bottom_right = kBoardTopLeft + 
                                  vec2(double(row + 1) * square_length,
                                       double(col + 1) * square_length);
       ci::Rectf square_bounding_box(square_top_left, 
@@ -187,12 +180,12 @@ void GameBoard::DrawSquares(double square_length, float edge_line_width,
 }
 
 void GameBoard::DrawNumbers() {
-  double square_length = (board_bottom_right_.x - board_top_left_.x) / 
-                         double(board_size_);
+  double square_length = (kBoardBottomRight.x - kBoardTopLeft.x) / 
+                         double(kBoardSize);
   for (size_t row = 0; row < sudoku_board_.GetBoardSize(); ++row) {
     for (size_t col = 0; col < sudoku_board_.GetBoardSize(); ++col) {
       if (sudoku_board_.GetBoardNumbers()[row][col] != 0) {
-        vec2 square_center = board_top_left_ +
+        vec2 square_center = kBoardTopLeft +
                              vec2((double(row) + kNumberPosXParameter) * 
                                       square_length,
                                   (double(col) + kNumberPosYParameter) * 
@@ -248,7 +241,7 @@ void GameBoard::InitiateHighlighting() {
   }
 
   // Stores the tiles that are in the same sub board as with the clicked tile.
-  size_t sub_board_size = sqrt(board_size_);
+  size_t sub_board_size = sqrt(kBoardSize);
   size_t sub_board_row = size_t(clicked_tile_.x) / sub_board_size * 
                          sub_board_size;
   size_t sub_board_col = size_t(clicked_tile_.y) / sub_board_size * 
@@ -264,8 +257,8 @@ void GameBoard::InitiateHighlighting() {
   size_t tile_number = sudoku_board_.GetBoardNumbers()[clicked_tile_.x]
                                                       [clicked_tile_.y];
   if (tile_number != 0) {
-    for (size_t row = 0; row < board_size_; row++) {
-      for (size_t col = 0; col < board_size_; col++) {
+    for (size_t row = 0; row < kBoardSize; row++) {
+      for (size_t col = 0; col < kBoardSize; col++) {
         if (sudoku_board_.GetBoardNumbers()[row][col] == tile_number) {
           same_number_tiles_to_highlight_.emplace_back(row, col);
         }

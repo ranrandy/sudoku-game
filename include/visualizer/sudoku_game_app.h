@@ -59,13 +59,6 @@ private:
   // provided that you can see the entire UI on your screen.
   const int kWindowLength = 1100;
   const int kWindowWidth = 800;
-  
-  const size_t kBoardSize = 9;
-  
-  const vec2 kBoardTopLeft = vec2(80, 80);
-  const vec2 kBoardRightBottom = vec2(710, 710);
-  const vec2 kSolutionBoxTopLeft = vec2(800, 280);
-  const vec2 kSolutionBoxBottomRight = vec2(1000, 320);
 
   const ci::Color kBackGroundColor = ci::Color8u(219, 229, 214);
   
