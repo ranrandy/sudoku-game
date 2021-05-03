@@ -4,9 +4,7 @@ namespace sudokugame {
 
 namespace visualizer {
 
-SolutionBox::SolutionBox() {
-  
-}
+SolutionBox::SolutionBox() {}
 
 void SolutionBox::DrawSolutionBox() {
   ci::Rectf solution_box(kSolutionBoxTopLeft, kSolutionBoxBottomRight);

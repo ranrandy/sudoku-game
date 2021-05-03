@@ -40,25 +40,29 @@ void LevelBox::DrawLevelBox() {
                              kLevelBoxEdgeColor, kLevelFont);
 }
 
-void LevelBox::ChangeLevels(const vec2& event_position, 
-                            GameBoard& game_board, TimerBox& timer_box) {
+void LevelBox::ChangeLevels(const MouseEvent& event, GameBoard& game_board, 
+                            TimerBox& timer_box) {
   for (size_t level = 0; level < kTotalLevels; level++) {
-    if (abs(level_centers_[level].x - float(event_position.x)) <
+    if (abs(level_centers_[level].x - float(event.getPos().x)) <
         (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 &&
-        abs(level_centers_[level].y - float(event_position.y)) <
+        abs(level_centers_[level].y - float(event.getPos().y)) <
         (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
       switch (level) {
-      case 0:
-        game_board.GenerateValidBoard(GameBoard::Level::kEasy);
-        break;
-      case 1:
-        game_board.GenerateValidBoard(GameBoard::Level::kMedium);
-        break;
-      case 2:
-        game_board.GenerateValidBoard(GameBoard::Level::kHard);
-        break;
-      default:
-        game_board.GenerateValidBoard(GameBoard::Level::kMedium);
+        case 0: {
+          game_board.GenerateValidBoard(GameBoard::Level::kEasy);
+          break;
+        }
+        case 1: {
+          game_board.GenerateValidBoard(GameBoard::Level::kMedium);
+          break;
+        }
+        case 2: {
+          game_board.GenerateValidBoard(GameBoard::Level::kHard);
+          break;
+        }
+        default: {
+          game_board.GenerateValidBoard(GameBoard::Level::kMedium);
+        }
       }
       timer_box.Reset();
     }

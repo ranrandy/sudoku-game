@@ -18,7 +18,7 @@ void SudokuGameApp::keyDown(KeyEvent event) {
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
   game_board_.HandleHighlighting(event);
   game_board_.AddNumber(keyboard_.ClickKeyboard(event));
-  level_box_.ChangeLevels(event.getPos(), game_board_, timer_box_);
+  level_box_.ChangeLevels(event, game_board_, timer_box_);
   solution_box_.ShowSolution(event, game_board_, timer_box_);
 }
 

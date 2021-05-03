@@ -69,26 +69,36 @@ size_t Keyboard::ClickKeyboard(const ci::app::MouseEvent& event) {
 
 size_t Keyboard::HitKeyboard(const ci::app::KeyEvent& event) {
   switch (event.getCode()) { 
-  case KeyEvent::KEY_1:
-    return kKeyboardNumbers[0];
-  case KeyEvent::KEY_2:
-    return kKeyboardNumbers[1];
-  case KeyEvent::KEY_3:
-    return kKeyboardNumbers[2];
-  case KeyEvent::KEY_4:
-    return kKeyboardNumbers[3];
-  case KeyEvent::KEY_5:
-    return kKeyboardNumbers[4];
-  case KeyEvent::KEY_6:
-    return kKeyboardNumbers[5];
-  case KeyEvent::KEY_7:
-    return kKeyboardNumbers[6];
-  case KeyEvent::KEY_8:
-    return kKeyboardNumbers[7];
-  case KeyEvent::KEY_9:
-    return kKeyboardNumbers[8];
-  default:
-    return 0;
+    case KeyEvent::KEY_1: {
+      return kKeyboardNumbers[0];
+    }
+    case KeyEvent::KEY_2: {
+      return kKeyboardNumbers[1];
+    }
+    case KeyEvent::KEY_3: {
+      return kKeyboardNumbers[2];
+    }
+    case KeyEvent::KEY_4: {
+      return kKeyboardNumbers[3];
+    }
+    case KeyEvent::KEY_5: {
+      return kKeyboardNumbers[4];
+    }
+    case KeyEvent::KEY_6: {
+      return kKeyboardNumbers[5];
+    }
+    case KeyEvent::KEY_7: {
+      return kKeyboardNumbers[6];
+    }
+    case KeyEvent::KEY_8: {
+      return kKeyboardNumbers[7];
+    }
+    case KeyEvent::KEY_9: {
+      return kKeyboardNumbers[8];
+    }
+    default: {
+      return 0;
+    }
   }
 }
 

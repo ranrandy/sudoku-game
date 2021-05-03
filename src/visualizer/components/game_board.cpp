@@ -29,23 +29,27 @@ void GameBoard::Draw() {
 void GameBoard::GenerateValidBoard(Level level) {
   std::random_device rd;
   switch (level) {
-  case Level::kEasy:
-    sudoku_board_.GenerateValidBoard(rd() % (kEasyLevelMaxTotal -
-                                            kEasyLevelMinTotal) +
-                                    kEasyLevelMinTotal);
-    break;
-  case Level::kMedium:
-    sudoku_board_.GenerateValidBoard(rd() % (kMediumLevelMaxTotal -
-                                            kMediumLevelMinTotal) +
-                                    kMediumLevelMinTotal);
-    break;
-  case Level::kHard:
-    sudoku_board_.GenerateValidBoard(rd() % (kHardLevelMaxTotal -
-                                            kHardLevelMinTotal) +
-                                    kHardLevelMinTotal);
-    break;
-  default:
-    sudoku_board_.GenerateValidBoard(kDefaultNumberTotal);
+    case Level::kEasy: {
+      sudoku_board_.GenerateValidBoard(rd() % (kEasyLevelMaxTotal -
+                                               kEasyLevelMinTotal) +
+                                       kEasyLevelMinTotal);
+      break;
+    }
+    case Level::kMedium: {
+      sudoku_board_.GenerateValidBoard(rd() % (kMediumLevelMaxTotal -
+                                               kMediumLevelMinTotal) +
+                                       kMediumLevelMinTotal);
+      break;
+    }
+    case Level::kHard: {
+      sudoku_board_.GenerateValidBoard(rd() % (kHardLevelMaxTotal -
+                                               kHardLevelMinTotal) +
+                                       kHardLevelMinTotal);
+      break;
+    }
+    default: {
+      sudoku_board_.GenerateValidBoard(kDefaultNumberTotal);
+    }
   }
   InitiateHighlighting();
   sudoku_board_.ClearAddedTiles();
@@ -74,7 +78,7 @@ void GameBoard::RemoveNumber(bool is_hit) {
   }
 }
 
-void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
+void GameBoard::HandleHighlighting(const ci::app::MouseEvent& event) {
   vec2 game_board_center =
       vec2((kBoardTopLeft.x + kBoardBottomRight.x) / 2,
            (kBoardTopLeft.y + kBoardBottomRight.y) / 2);
@@ -89,37 +93,40 @@ void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
     size_t clicked_tile_y = (event.getY() - int(kBoardTopLeft.y)) / 
                             square_length;
     clicked_tile_ = vec2(clicked_tile_x, clicked_tile_y);
-    
     InitiateHighlighting();
   }
 }
 
-void GameBoard::HandleHighlighting(const ci::app::KeyEvent &event) {
+void GameBoard::HandleHighlighting(const ci::app::KeyEvent& event) {
   switch (event.getCode()) {
-  case KeyEvent::KEY_UP:
-  case KeyEvent::KEY_w:
-    if (clicked_tile_.y > 0) {
-      clicked_tile_.y -= 1;
+    case KeyEvent::KEY_UP:
+    case KeyEvent::KEY_w: {
+      if (clicked_tile_.y > 0) {
+        clicked_tile_.y -= 1;
+      }
+      break;
     }
-    break;
-  case KeyEvent::KEY_DOWN:
-  case KeyEvent::KEY_s:
-    if (clicked_tile_.y < kBoardSize - 1) {
-      clicked_tile_.y += 1;
+    case KeyEvent::KEY_DOWN:
+    case KeyEvent::KEY_s: {
+      if (clicked_tile_.y < kBoardSize - 1) {
+        clicked_tile_.y += 1;
+      }
+      break;
     }
-    break;
-  case KeyEvent::KEY_LEFT:
-  case KeyEvent::KEY_a:
-    if (clicked_tile_.x > 0) {
-      clicked_tile_.x -= 1;
+    case KeyEvent::KEY_LEFT:
+    case KeyEvent::KEY_a: {
+      if (clicked_tile_.x > 0) {
+        clicked_tile_.x -= 1;
+      }
+      break;
     }
-    break;
-  case KeyEvent::KEY_RIGHT:
-  case KeyEvent::KEY_d:
-    if (clicked_tile_.x < kBoardSize - 1) {
-      clicked_tile_.x += 1;
+    case KeyEvent::KEY_RIGHT:
+    case KeyEvent::KEY_d: {
+      if (clicked_tile_.x < kBoardSize - 1) {
+        clicked_tile_.x += 1;
+      }
+      break;
     }
-    break;
   }
   InitiateHighlighting();
 }
@@ -267,6 +274,6 @@ void GameBoard::InitiateHighlighting() {
   }
 }
 
-} // visualizer
+} // namespace visualizer
 
-} // sudokugame
+} // namespace sudokugame

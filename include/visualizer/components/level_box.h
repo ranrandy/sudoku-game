@@ -12,6 +12,7 @@ namespace visualizer {
 
 using sudokugame::visualizer::GameBoard;
 using sudokugame::visualizer::TimerBox;
+using ci::app::MouseEvent;
 using ci::app::KeyEvent;
 using glm::vec2;
 
@@ -19,7 +20,7 @@ using glm::vec2;
  * Displays the level box on the screen.
  */
 class LevelBox {
-public:
+ public:
   /**
    * Constructs a Level box.
    */
@@ -32,14 +33,14 @@ public:
   
   /**
    * Changes the level of the game, and also starts a new game.
-   * @param event_position the mouse event
+   * @param event the mouse event
    * @param game_board the sudoku game board
    * @param timer_box the timer box
    */
-  void ChangeLevels(const vec2& event_position, GameBoard& game_board, 
+  void ChangeLevels(const MouseEvent& event, GameBoard& game_board, 
                     TimerBox& timer_box);
 
-private:
+ private:
   const size_t kTotalLevels = 3;
 
   const float kLevelBoxEdgeWidth = 2.0;

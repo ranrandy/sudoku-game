@@ -2,10 +2,8 @@
 
 namespace sudokugame {
 
-SudokuSolver::SudokuSolver(const gameboard &board) {
-  tile_to_fill_ = 0;
-  sudoku_board_ = board;
-  
+SudokuSolver::SudokuSolver(const gameboard& board) : sudoku_board_(board), 
+                                                     tile_to_fill_(0) {
   // Stores the empty tiles that need to be filled in
   for (size_t row = 0; row < board.size(); row++) {
     for (size_t col = 0; col < board.size(); col++) {
@@ -110,4 +108,4 @@ bool SudokuSolver::IsValidTile(size_t row, size_t col,
   return true;
 }
 
-}
+} // namespace sudokugame

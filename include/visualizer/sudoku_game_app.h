@@ -20,13 +20,14 @@ using sudokugame::visualizer::LevelBox;
 using sudokugame::visualizer::TimerBox;
 using sudokugame::visualizer::SolutionBox;
 using ci::app::KeyEvent;
+using ci::app::MouseEvent;
 using glm::vec2;
 
 /**
  * An app for visualizing the sudoku game interface.
  */
 class SudokuGameApp : public ci::app::App {
-public:
+ public:
   /**
    * Default Constructor for a sudoku game app.
    */
@@ -42,7 +43,7 @@ public:
    * Handles mouse events.
    * @param event mouse event on a mouse
    */
-  void mouseDown(ci::app::MouseEvent event) override;
+  void mouseDown(MouseEvent event) override;
   
   /**
    * Draws the screen based on components 
@@ -55,7 +56,7 @@ public:
    */
   void update() override;
 
-private:
+ private:
   // provided that you can see the entire UI on your screen.
   const int kWindowLength = 1100;
   const int kWindowWidth = 800;

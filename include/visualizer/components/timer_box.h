@@ -15,7 +15,7 @@ using ci::Font;
 using glm::vec2;
 
 class TimerBox {
-public:
+ public:
   /**
    * Constructs a timer for the current sudoku game.
    */
@@ -41,7 +41,7 @@ public:
    */
   void Reset();
   
-private:
+ private:
   // Board margin color
   const ci::Color kTimerBoxEdgeColor = "black";
   
@@ -53,14 +53,22 @@ private:
   const Font kTimerFont = Font("Times New Roman", 36);
   
   const size_t kTimeScale = 60;
+  const size_t kMaxHour = 100;
+  const size_t kMaxMinute = 60;
+  const size_t kMaxSecond = 60;
+  
   const std::string kTimeDelimiter = ":";
   const std::string kTimePlaceHolder = "0";
   
+  /**
+   * Convert the system timer to a time string
+   * @return the time string
+   */
   std::string ConvertTimeToString();
   
   Timer timer_;
 };
 
-} // visualizer
+} // namespace visualizer
 
-} // sudokugame
+} // namespace sudokugame

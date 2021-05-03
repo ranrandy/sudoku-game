@@ -85,20 +85,16 @@ void SudokuBoard::RemoveNumber(const glm::vec2& position) {
   }
 }
 
-bool SudokuBoard::AddNumber(size_t row, size_t col, size_t number) {
-  if (!IsValidTile(row, col, number)) {
-    return false;
-  }
-  board_[row][col] = number;
-  return true;
+const vector<vector<size_t>>& SudokuBoard::GetBoardNumbers() const {
+  return board_;
+}
+
+const vector<glm::vec2>& SudokuBoard::GetAddedTiles() const {
+  return tiles_added_number_;
 }
 
 size_t SudokuBoard::GetBoardSize() const {
   return board_size_;
-}
-
-const vector<vector<size_t>>& SudokuBoard::GetBoardNumbers() const {
-  return board_;
 }
 
 size_t SudokuBoard::GetNumberTotal() const {
@@ -113,8 +109,8 @@ size_t SudokuBoard::GetNumberTotal() const {
   return number_total;
 }
 
-const vector<glm::vec2>& SudokuBoard::GetAddedTiles() const {
-  return tiles_added_number_;
+void SudokuBoard::SetBoardNumbers(const vector<vector<size_t>>& board) {
+  board_ = board;
 }
 
 void SudokuBoard::ClearAddedTiles() {
@@ -124,8 +120,12 @@ void SudokuBoard::ClearAddedTiles() {
   tiles_added_number_.clear();
 }
 
-void SudokuBoard::SetBoardNumbers(const vector<vector<size_t>>& board) {
-  board_ = board;
+bool SudokuBoard::AddNumber(size_t row, size_t col, size_t number) {
+  if (!IsValidTile(row, col, number)) {
+    return false;
+  }
+  board_[row][col] = number;
+  return true;
 }
 
 void SudokuBoard::GenerateNumbers(size_t number_total) {

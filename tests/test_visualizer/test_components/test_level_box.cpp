@@ -10,7 +10,7 @@ using glm::vec2;
 
 TEST_CASE("Change levels of the game") {
   LevelBox level_box;
-  GameBoard game_board(vec2(80, 80), vec2(710, 710), 9);
+  GameBoard game_board;
   game_board.GenerateValidBoard(GameBoard::Level::kMedium);
   
   /*

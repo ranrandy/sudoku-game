@@ -50,6 +50,12 @@ class SudokuBoard {
    * @return a 2D array containing the numbers on the board
    */
   const vector<vector<size_t>>& GetBoardNumbers() const;
+
+  /**
+   * Gets the tiles whose number is added by the player.
+   * @return a vector of tile positions at where the number is added by player
+   */
+  const vector<glm::vec2>& GetAddedTiles() const;
   
   /**
    * Gets the total number of numbers on the board.
@@ -64,21 +70,15 @@ class SudokuBoard {
   size_t GetBoardSize() const;
   
   /**
-   * Gets the tiles whose number is added by the player.
-   * @return a vector of tile positions at where the number is added by player
-   */
-  const vector<glm::vec2>& GetAddedTiles() const;
-  
-  /**
-   * Clears the vector storing tiles whose number is added by the player
-   */
-  void ClearAddedTiles();
-  
-  /**
    * Sets the numbers on a board
    * @param board the board to copy from
    */
   void SetBoardNumbers(const vector<vector<size_t>>& board);
+
+  /**
+   * Clears the vector storing tiles whose number is added by the player
+   */
+  void ClearAddedTiles();
   
  private:
   const size_t kMaxBoardSize = 9;

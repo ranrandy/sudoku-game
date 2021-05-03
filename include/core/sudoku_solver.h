@@ -11,7 +11,7 @@ using std::vector;
  * solutions, this class can only provide one of them.
  */
 class SudokuSolver {
-public:
+ public:
   typedef vector<vector<size_t>> gameboard;
   
   /**
@@ -32,7 +32,7 @@ public:
    */
   const gameboard& GetSolution() const; 
 
-private:
+ private:
   /**
    * Fill in the whole sudoku board with numbers.
    * @return true if the board has been successfully filled in

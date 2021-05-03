@@ -82,7 +82,7 @@ class GameBoard {
    */
   void InitiateHighlighting();
 
-private:
+ private:
   // Board background color
   const ci::Color kBoardColor = ci::Color8u(219, 229, 214);
   
@@ -164,6 +164,6 @@ private:
   SudokuBoard sudoku_board_;
 };
 
-} // visualizer
+} // namespace visualizer
 
-} // sudokugame
+} // namespace sudokugame

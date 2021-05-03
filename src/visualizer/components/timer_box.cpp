@@ -36,7 +36,7 @@ std::string TimerBox::ConvertTimeToString() {
   size_t hour = size_t(timer_.getSeconds()) / (kTimeScale * kTimeScale);
   if (hour / 10 == 0) {
     time_str += kTimePlaceHolder + std::to_string(hour) + kTimeDelimiter;
-  } else if (hour < 100){
+  } else if (hour < kMaxHour){
     time_str += std::to_string(hour) + kTimeDelimiter;
   }
   
@@ -44,14 +44,14 @@ std::string TimerBox::ConvertTimeToString() {
                                                      hour) / kTimeScale;
   if (minute / 10 == 0) {
     time_str += kTimePlaceHolder + std::to_string(minute) + kTimeDelimiter;
-  } else if (minute < 60) {
+  } else if (minute < kMaxMinute) {
     time_str += std::to_string(minute) + kTimeDelimiter;
   }
   
   size_t second = size_t(timer_.getSeconds()) - kTimeScale * minute;
   if (second / 10 == 0) {
     time_str += kTimePlaceHolder + std::to_string(second);
-  } else if (second < 60) {
+  } else if (second < kMaxSecond) {
     time_str += std::to_string(second);
   }
   return time_str;
