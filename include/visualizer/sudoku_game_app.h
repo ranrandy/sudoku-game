@@ -7,6 +7,8 @@
 #include "visualizer/components/game_board.h"
 #include "visualizer/components/keyboard.h"
 #include "visualizer/components/level_box.h"
+#include "visualizer/components/timer_box.h"
+#include "visualizer/components/solution_box.h"
 
 namespace sudokugame {
 
@@ -15,6 +17,8 @@ namespace visualizer {
 using sudokugame::visualizer::GameBoard;
 using sudokugame::visualizer::Keyboard;
 using sudokugame::visualizer::LevelBox;
+using sudokugame::visualizer::TimerBox;
+using sudokugame::visualizer::SolutionBox;
 using ci::app::KeyEvent;
 using glm::vec2;
 
@@ -57,12 +61,6 @@ private:
   const int kWindowWidth = 800;
   
   const size_t kBoardSize = 9;
-
-  const float kSolutionBoxEdgeWidth = 2.0;
-  const float kSolutionBoxPosYParameter = 2.05;
-  
-  const std::string kSolutionString = "Solution";
-  const std::string kNoSolutionString = "No Solution";
   
   const vec2 kBoardTopLeft = vec2(80, 80);
   const vec2 kBoardRightBottom = vec2(710, 710);
@@ -70,13 +68,6 @@ private:
   const vec2 kSolutionBoxBottomRight = vec2(1000, 320);
 
   const ci::Color kBackGroundColor = ci::Color8u(219, 229, 214);
-  const ci::Color kSolutionBoxColor = ci::Color8u(219, 229, 214);
-  const ci::Color kSolutionBoxEdgeColor = "black";
-
-  const Font kSolutionFont = Font("Times New Roman", 30);
-  
-  void DrawSolutionBox(const std::string& solution_status);
-  void ShowSolution(const ci::app::MouseEvent& event);
   
   GameBoard game_board_;
   
@@ -84,7 +75,9 @@ private:
   
   LevelBox level_box_;
   
-  std::string solution_status_ = kSolutionString;
+  TimerBox timer_box_;
+  
+  SolutionBox solution_box_;
 };
 
 } // namespace visualizer

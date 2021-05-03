@@ -59,6 +59,9 @@ void GameBoard::GenerateValidBoard(Level level) {
 }
 
 bool GameBoard::ShowSolution() {
+  for (const vec2& pos : sudoku_board_.GetAddedTiles()) {
+    sudoku_board_.RemoveNumber(pos);
+  }
   SudokuSolver sudoku_solver(sudoku_board_.GetBoardNumbers());
   if (sudoku_solver.Solve()) {
     sudoku_board_.SetBoardNumbers(sudoku_solver.GetSolution());
