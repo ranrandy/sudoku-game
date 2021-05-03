@@ -4,8 +4,9 @@ namespace sudokugame {
 
 namespace visualizer {
 
-TimerBox::TimerBox(bool start_on_construction) {
-  timer_ = Timer(start_on_construction);  
+TimerBox::TimerBox() {
+  timer_ = Timer();  
+  timer_.start();
 }
 
 void TimerBox::Draw() {

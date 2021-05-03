@@ -18,9 +18,8 @@ class TimerBox {
 public:
   /**
    * Constructs a timer for the current sudoku game.
-   * @param start_on_construction starts to time
    */
-  TimerBox(bool start_on_construction);
+  TimerBox();
   
   /**
    * Draws the timer box on the screen. 

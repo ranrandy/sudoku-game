@@ -4,12 +4,14 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "visualizer/components/game_board.h"
+#include "visualizer/components/timer_box.h"
 
 namespace sudokugame {
 
 namespace visualizer {
 
 using sudokugame::visualizer::GameBoard;
+using sudokugame::visualizer::TimerBox;
 using ci::app::KeyEvent;
 using glm::vec2;
 
@@ -19,12 +21,23 @@ using glm::vec2;
 class LevelBox {
 public:
   /**
-   * Default Constructor for a Level box.
+   * Constructs a Level box.
    */
   LevelBox();
 
+  /**
+   * Draws the level box on the screen.
+   */
   void DrawLevelBox();
-  void ChangeLevels(const vec2& event_position, GameBoard& game_board);
+  
+  /**
+   * Changes the level of the game, and also starts a new game.
+   * @param event_position the mouse event
+   * @param game_board the sudoku game board
+   * @param timer_box the timer box
+   */
+  void ChangeLevels(const vec2& event_position, GameBoard& game_board, 
+                    TimerBox& timer_box);
 
 private:
   const size_t kTotalLevels = 3;
@@ -36,8 +49,8 @@ private:
   const std::string kMediumLevel = "Medium";
   const std::string kHardLevel = "Hard";
   
-  const vec2 kLevelBoxTopLeft = vec2(800, 80);
-  const vec2 kLevelBoxBottomRight = vec2(1000, 200);
+  const vec2 kLevelBoxTopLeft = vec2(800, 140);
+  const vec2 kLevelBoxBottomRight = vec2(1000, 260);
 
   const ci::Color kLevelBoxColor = ci::Color8u(219, 229, 214);
   const ci::Color kLevelBoxEdgeColor = "black";

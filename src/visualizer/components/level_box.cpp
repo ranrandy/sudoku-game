@@ -41,7 +41,7 @@ void LevelBox::DrawLevelBox() {
 }
 
 void LevelBox::ChangeLevels(const vec2& event_position, 
-                            GameBoard& game_board) {
+                            GameBoard& game_board, TimerBox& timer_box) {
   for (size_t level = 0; level < kTotalLevels; level++) {
     if (abs(level_centers_[level].x - float(event_position.x)) <
         (kLevelBoxBottomRight.x - kLevelBoxTopLeft.x) / 2 &&
@@ -49,17 +49,18 @@ void LevelBox::ChangeLevels(const vec2& event_position,
         (kLevelBoxBottomRight.y - kLevelBoxTopLeft.y) / 2) {
       switch (level) {
       case 0:
-        game_board.SetLevel(GameBoard::Level::kEasy);
+        game_board.GenerateValidBoard(GameBoard::Level::kEasy);
         break;
       case 1:
-        game_board.SetLevel(GameBoard::Level::kMedium);
+        game_board.GenerateValidBoard(GameBoard::Level::kMedium);
         break;
       case 2:
-        game_board.SetLevel(GameBoard::Level::kHard);
+        game_board.GenerateValidBoard(GameBoard::Level::kHard);
         break;
       default:
-        game_board.SetLevel(GameBoard::Level::kMedium);
+        game_board.GenerateValidBoard(GameBoard::Level::kMedium);
       }
+      timer_box.Reset();
     }
   }
 }
