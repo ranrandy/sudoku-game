@@ -58,14 +58,8 @@ void SudokuBoard::GenerateValidBoard(size_t number_total) {
 }
 
 void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
-  // Checks if the position is original fixed or player added.
-  bool is_added_by_player = false;
-  for (const glm::vec2& tile_added_number : tiles_added_number_) {
-    if (position == tile_added_number) {
-      is_added_by_player = true;
-    }
-  }
-  
+  bool is_added_by_player = IsAddedByPlayer(position);
+
   // Checks if the number is within range and if the tile is empty or the tile 
   // was added by the player.
   if ((board_[position.x][position.y] == 0 || is_added_by_player) && 
@@ -74,6 +68,20 @@ void SudokuBoard::AddNumber(const glm::vec2& position, size_t number) {
     if (!is_added_by_player) {
       tiles_added_number_.push_back(position);
     }
+  }
+}
+
+void SudokuBoard::RemoveNumber(const glm::vec2& position) {
+  // Checks if the number was added by the player.
+  if (IsAddedByPlayer(position)) {
+    board_[position.x][position.y] = 0;
+    std::vector<glm::vec2> tiles_added_number_after_removing;
+    for (const glm::vec2& pos : tiles_added_number_) {
+      if (pos != position) {
+        tiles_added_number_after_removing.push_back(pos);
+      }
+    }
+    tiles_added_number_ = tiles_added_number_after_removing;
   }
 }
 
@@ -183,6 +191,17 @@ bool SudokuBoard::IsValidSubBoard(size_t row, size_t col, size_t number) const {
     }
   }
   return true;
+}
+
+bool SudokuBoard::IsAddedByPlayer(const glm::vec2 &position) {
+  // Checks if the position is original fixed or player added.
+  bool is_added_by_player = false;
+  for (const glm::vec2& tile_added_number : tiles_added_number_) {
+    if (position == tile_added_number) {
+      is_added_by_player = true;
+    }
+  }
+  return is_added_by_player;
 }
 
 } // namespace sudokugame

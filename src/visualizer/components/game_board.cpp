@@ -72,6 +72,12 @@ void GameBoard::AddNumber(size_t number) {
   sudoku_board_.AddNumber(clicked_tile_, number);
 }
 
+void GameBoard::RemoveNumber(bool is_hit) {
+  if (is_hit) {
+    sudoku_board_.RemoveNumber(clicked_tile_);
+  }
+}
+
 void GameBoard::HandleHighlighting(const ci::app::MouseEvent &event) {
   vec2 game_board_center =
       vec2((board_top_left_.x + board_bottom_right_.x) / 2,

@@ -38,6 +38,12 @@ class SudokuBoard {
    * @param number the number to be added
    */
   void AddNumber(const glm::vec2& position, size_t number);
+  
+  /**
+   * Removes a number that is added by the player from the board.
+   * @param position the position where the player wants to remove a number
+   */
+  void RemoveNumber(const glm::vec2& position);
 
   /**
    * Gets a 2D array containing the numbers on the board.
@@ -117,6 +123,13 @@ class SudokuBoard {
    * @return if adding the number conforms to the rule in a sub board
    */
   bool IsValidSubBoard(size_t row, size_t col, size_t number) const;
+  
+  /**
+   * Checks if the number at this position was added by the player.
+   * @param position the position to check
+   * @return true if the number was not originally generated
+   */
+  bool IsAddedByPlayer(const glm::vec2& position);
   
   // The size of the sudoku game board
   size_t board_size_;

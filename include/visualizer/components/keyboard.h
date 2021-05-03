@@ -40,6 +40,13 @@ class Keyboard {
    */
   size_t HitKeyboard(const ci::app::KeyEvent& event);
   
+  /**
+   * Handles hitting on the delete key (fn + delete on mac).
+   * @param event the key event
+   * @return true if delete key is hit
+   */
+  bool HitDelete(const ci::app::KeyEvent& event);
+  
  private:
   // The distance between different keys on the keyboard 
   const size_t kKeyboardEdgeOffset = 10;

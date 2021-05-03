@@ -63,6 +63,12 @@ class GameBoard {
   void AddNumber(size_t number);
   
   /**
+   * Removes the number on the clicked tile.
+   * @param if the delete key is hit
+   */
+  void RemoveNumber(bool is_hit);
+  
+  /**
    * Handles highlighting related row, column and sub board on the screen 
    * after clicking on some tile.
    * @param event the mouse event
@@ -75,6 +81,11 @@ class GameBoard {
    * @param event the key event
    */
   void HandleHighlighting(const ci::app::KeyEvent& event);
+
+  /**
+   * Initiate vectors related to highlighting.
+   */
+  void InitiateHighlighting();
 
 private:
   // Board background color
@@ -138,13 +149,6 @@ private:
    * Draws number strings on the screen.
    */
   void DrawNumbers();
-  
-  /**
-   * Initiate vectors related to highlighting.
-   */
-  void InitiateHighlighting();
-  
-  void AddHighlightedTiles(size_t);
   
   // Size of a sudoku game board
   size_t board_size_;

@@ -92,6 +92,14 @@ size_t Keyboard::HitKeyboard(const ci::app::KeyEvent& event) {
   }
 }
 
+bool Keyboard::HitDelete(const ci::app::KeyEvent &event) {
+  if (event.getCode() == KeyEvent::KEY_DELETE || 
+      event.getCode() == KeyEvent::KEY_BACKSPACE) {
+    return true;
+  }
+  return false;
+}
+
 } // visualizer
 
 } // sudokugame

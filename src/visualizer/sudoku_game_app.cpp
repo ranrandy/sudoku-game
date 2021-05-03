@@ -11,11 +11,9 @@ SudokuGameApp::SudokuGameApp()
 }
 
 void SudokuGameApp::keyDown(KeyEvent event) {
-  if (event.getCode() == KeyEvent::KEY_DELETE) {
-    std::cout << "later" << std::endl;
-  }
   game_board_.HandleHighlighting(event);
   game_board_.AddNumber(keyboard_.HitKeyboard(event));
+  game_board_.RemoveNumber(keyboard_.HitDelete(event));
 }
 
 void SudokuGameApp::mouseDown(ci::app::MouseEvent event) {
@@ -38,7 +36,7 @@ void SudokuGameApp::draw() {
 }
 
 void SudokuGameApp::update() {
-  
+  game_board_.InitiateHighlighting();
 }
 
 void SudokuGameApp::DrawSolutionBox(const std::string& solution_status) {
