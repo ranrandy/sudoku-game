@@ -1,6 +1,5 @@
 #include "visualizer/components/solution_box.h"
 
-
 namespace sudokugame {
 
 namespace visualizer {
@@ -25,7 +24,7 @@ void SolutionBox::DrawSolutionBox() {
 }
 
 void SolutionBox::ShowSolution(const ci::app::MouseEvent& event, 
-                               GameBoard& game_board) {
+                               GameBoard& game_board, TimerBox& timer_box) {
   vec2 solution_string_center =
       vec2((kSolutionBoxTopLeft.x + kSolutionBoxBottomRight.x) / 2,
            (kSolutionBoxTopLeft.y + kSolutionBoxBottomRight.y) / 2);
@@ -34,6 +33,7 @@ void SolutionBox::ShowSolution(const ci::app::MouseEvent& event,
       abs(solution_string_center.y - float(event.getY())) <
       (kSolutionBoxBottomRight.y - kSolutionBoxTopLeft.y) / 2) {
     game_board.ShowSolution();
+    timer_box.Stop();
   }
 }
 

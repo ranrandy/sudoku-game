@@ -4,6 +4,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "visualizer/components/game_board.h"
+#include "visualizer/components/timer_box.h"
 
 namespace sudokugame {
 
@@ -27,8 +28,10 @@ class SolutionBox {
    * Shows the solution of the game if the solution box is clicked
    * @param event the mouse event
    * @param game_board the sudoku game board
+   * @param timer_box the timer for the game
    */
-  void ShowSolution(const ci::app::MouseEvent& event, GameBoard& game_board);
+  void ShowSolution(const ci::app::MouseEvent& event, GameBoard& game_board, 
+                    TimerBox& timer_box);
   
  private:
   const float kSolutionBoxEdgeWidth = 2.0;
