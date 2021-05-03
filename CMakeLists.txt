@@ -54,14 +54,18 @@ list(APPEND SOURCE_FILES    src/core/sudoku_board.cpp
                             src/visualizer/sudoku_game_app.cpp
                             src/visualizer/components/game_board.cpp
                             src/visualizer/components/level_box.cpp
-                            src/visualizer/components/keyboard.cpp)
+                            src/visualizer/components/keyboard.cpp
+                            src/visualizer/components/timer_box.cpp
+                            src/visualizer/components/solution_box.cpp)
 
-list(APPEND TEST_FILES tests/test_core/test_sudoku_board.cpp
-        tests/test_core/test_sudoku_solver.cpp
-        tests/test_visualizer/test_components/test_game_board.cpp
-        tests/test_visualizer/test_sudoku_game_app.cpp
-        tests/test_visualizer/test_components/test_level_box.cpp
-        tests/test_visualizer/test_components/test_keyboard.cpp)
+list(APPEND TEST_FILES      tests/test_core/test_sudoku_board.cpp
+                            tests/test_core/test_sudoku_solver.cpp
+                            tests/test_visualizer/test_components/test_game_board.cpp
+                            tests/test_visualizer/test_sudoku_game_app.cpp
+                            tests/test_visualizer/test_components/test_level_box.cpp
+                            tests/test_visualizer/test_components/test_keyboard.cpp
+                            tests/test_visualizer/test_components/test_timer_box.cpp
+                            tests/test_visualizer/test_components/test_solution_box.cpp)
 
 ci_make_app(
         APP_NAME        sudoku-game
