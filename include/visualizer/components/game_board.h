@@ -13,6 +13,7 @@ namespace sudokugame {
 namespace visualizer {
 
 using sudokugame::SudokuBoard;
+using ci::app::KeyEvent;
 using ci::Font;
 using glm::vec2;
 
@@ -20,7 +21,7 @@ using glm::vec2;
  * Displays the game board on the screen
  */
 class GameBoard {
-public:
+ public:
   // Represents different levels of the sudoku game
   enum class Level {
     kEasy, 
@@ -47,7 +48,7 @@ public:
    * Sets level for the game and generate a new board for the new level.
    * @param level the level of the game
    */
-  void SetLevel(Level level);
+  void GenerateValidBoard(Level level);
   
   /**
    * Shows a solution (full) board of the game
@@ -62,11 +63,19 @@ public:
   void AddNumber(size_t number);
   
   /**
-   * Handles highlighting related row, column and sub board on the screen.
+   * Handles highlighting related row, column and sub board on the screen 
+   * after clicking on some tile.
    * @param event the mouse event
    */
   void HandleHighlighting(const ci::app::MouseEvent& event);
   
+  /**
+   * Handles highlighting related row, column and sub board on the screen 
+   * after using computer keyboard to move the clicked tile.
+   * @param event the key event
+   */
+  void HandleHighlighting(const ci::app::KeyEvent& event);
+
 private:
   // Board background color
   const ci::Color kBoardColor = ci::Color8u(219, 229, 214);
@@ -92,7 +101,7 @@ private:
   
   // The color of numbers who are added by the player
   // but not originally generated
-  const ci::Color kAddedNumberTileColor = "yellow";
+  const ci::Color kAddedNumberTileColor = "blue";
 
   // Different total number range in different game levels
   const size_t kDefaultNumberTotal = 30;
@@ -105,10 +114,11 @@ private:
   
   const size_t kBoardSize = 9;
   
-  const float kSubBoardLineWidth = 3.0;
+  const float kSubBoardMarginWidth = 3.0;
   const float kTileLineWidth = 1.0;
   
-  // Parameters to fit the location of number strings on the screen to the tiles
+  // Parameters to fit the location of number strings on the screen
+  // into the tiles
   const float kNumberPosXParameter = 0.5;
   const float kNumberPosYParameter = 0.25;
   
@@ -121,7 +131,7 @@ private:
    * @param number the number of squares to draw
    * @param is_tile if the square to be drawn is a tile
    */
-  void DrawSquares(size_t square_length, size_t edge_line_width, size_t number, 
+  void DrawSquares(double square_length, float edge_line_width, size_t number, 
                    bool is_tile = true);
   
   /**
@@ -134,15 +144,28 @@ private:
    */
   void InitiateHighlighting();
   
+  void AddHighlightedTiles(size_t);
+  
+  // Size of a sudoku game board
   size_t board_size_;
   
+  // Top left corner position of the board
   vec2 board_top_left_;
+  
+  // Bottom right corner position of the board
   vec2 board_bottom_right_;
+  
+  // The position of the clicked tile
   vec2 clicked_tile_;
   
+  // Related tiles in the same row, column or sub board to be highlighted
   vector<vec2> tiles_to_highlight_;
+  
+  // Tiles with identical numbers to be highlighted
   vector<vec2> same_number_tiles_to_highlight_;
   
+  // A sudoku board object containing the numbers data and 
+  // operate adding and removing numbers from the board
   SudokuBoard sudoku_board_;
 };
 
